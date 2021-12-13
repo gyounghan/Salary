@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="97dp"
+        android:layout_height="37dp"
+        android:text="예연"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.04"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.044" />
+
+
+    <Button
+        android:id="@+id/btn_month2"
+        android:layout_width="129dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_bg_orange_selected"
+        android:gravity="center"
+        android:text="Month"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="80dp" />
+
+    <Button
+        android:id="@+id/btn_month"
+        android:layout_width="129dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="144dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_bg_orange_selected"
+        android:gravity="center"
+        android:text="Month"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="80dp" />
+
+    <Button
+        android:id="@+id/btn_month3"
+        android:layout_width="129dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="272dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_bg_orange_selected"
+        android:gravity="center"
+        android:text="Month"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="80dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
