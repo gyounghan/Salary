@@ -11,9 +11,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 
+import com.example.salary.Adapter.ListViewAdapter;
 import com.example.salary.R;
 
 public class AreaCompanyFragment extends Fragment {
@@ -28,7 +30,12 @@ public class AreaCompanyFragment extends Fragment {
 
         ListView list = (ListView) rootView.findViewById(R.id.companyList);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, company);
+        ListViewAdapter adapter = new ListViewAdapter();
+
+        for (String companyName : company) {
+            adapter.addItem(ContextCompat.getDrawable(getContext(), R.drawable.companylogo), companyName, "부산광역시");
+            System.out.println("회사이름: " + companyName);
+        }
         list.setAdapter(adapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
