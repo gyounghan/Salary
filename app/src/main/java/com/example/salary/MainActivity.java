@@ -8,6 +8,7 @@ import android.os.Bundle;
 import com.example.salary.Fragment.AllCompanyFragment;
 import com.example.salary.Fragment.AreaCompanyFragment;
 import com.example.salary.Fragment.CenterCompanyFragment;
+import com.example.salary.data.CompanyDataManager;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -16,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     private Fragment allCompany = new AllCompanyFragment();
     private Fragment centerCompany = new CenterCompanyFragment();
     private Fragment areaCompany = new AreaCompanyFragment();
+
+    private CompanyDataManager companyDBManager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        companyDBManager = CompanyDataManager.getInstance(this);
 
     }
 }

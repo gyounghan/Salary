@@ -38,10 +38,12 @@ public class ListViewAdapter extends BaseAdapter {
         return position;
     }
 
+    // adapter가 어떻게 보여질지
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Context context = parent.getContext();
 
+        // listviewitem 리소스를 view로 변환
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.listviewitem, parent, false);

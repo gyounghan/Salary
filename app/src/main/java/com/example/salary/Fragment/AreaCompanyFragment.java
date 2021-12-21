@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -13,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
 
 import com.example.salary.Adapter.ListViewAdapter;
 import com.example.salary.R;
@@ -33,7 +31,7 @@ public class AreaCompanyFragment extends Fragment {
         ListViewAdapter adapter = new ListViewAdapter();
 
         for (String companyName : company) {
-            adapter.addItem(ContextCompat.getDrawable(getContext(), R.drawable.companylogo), companyName, "부산광역시");
+            adapter.addItem(ContextCompat.getDrawable(getContext(), R.drawable.beco_logo), companyName, "부산광역시");
             System.out.println("회사이름: " + companyName);
         }
         list.setAdapter(adapter);

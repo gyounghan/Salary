@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.salary.R;
+import com.example.salary.data.CompanyDataManager;
 
 public class AllCompanyFragment extends Fragment {
 
@@ -27,7 +28,9 @@ public class AllCompanyFragment extends Fragment {
 
         ListView list = (ListView) rootView.findViewById(R.id.companyList);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, company);
+        String[] companyList = CompanyDataManager.getCompanyList();
+//        String success = CompanyDataManager.getCompanyList();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, companyList);
         list.setAdapter(adapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
