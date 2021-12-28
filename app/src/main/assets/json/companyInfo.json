@@ -1,0 +1,29 @@
+{
+  "companyInfo" : [
+    {
+      "name" : "한국예탁결제원",
+      "address" : "부산광역시",
+      "type" : "central"
+    },{
+      "name" : "서울교통공사",
+      "address" : "서울특별시",
+      "type" : "local"
+    },{
+      "name" : "부산교통공사",
+      "address" : "부산광역시",
+      "type" : "local"
+    },{
+      "name" : "한국수자원공사",
+      "address" : "대전특별시",
+      "type" : "central"
+    },{
+      "name" : "한국기초과학연구원",
+      "address" : "대전특별시",
+      "type" : "central"
+    },{
+      "name" : "대구교통공사",
+      "address" : "대구광역시",
+      "type" : "local"
+    }
+  ]
+}

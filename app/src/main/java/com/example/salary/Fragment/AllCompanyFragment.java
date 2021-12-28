@@ -12,11 +12,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.salary.Adapter.ListViewAdapter;
 import com.example.salary.R;
+import com.example.salary.data.CompanyData;
 import com.example.salary.data.CompanyDataManager;
 import com.example.salary.data.DBHelper;
+import com.example.salary.data.SalaryData;
+
+import java.util.ArrayList;
 
 public class AllCompanyFragment extends Fragment {
 
@@ -29,20 +35,20 @@ public class AllCompanyFragment extends Fragment {
 
         // 리스트 추가
         final String[] company = {"한국예탁결제원", "한국수자원공사", "부산환경공단", "부산교통공사", "한국자산관리공사", "주택금융공사"};
+        ArrayList<CompanyData> companyList = SalaryData.getInstance().getCompanyList();
 
-        dbHelper = new DBHelper(getContext(), 1);
         ListView list = (ListView) rootView.findViewById(R.id.companyList);
 
-        String companyInfo = dbHelper.getCompanyInfo();
-        String[] companyList = companyInfo.split(" ");
-//        String success = CompanyDataManager.getCompanyList();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, companyList);
-        list.setAdapter(adapter);
+        ListViewAdapter adapter = new ListViewAdapter();
 
+        for (CompanyData companyInfo : companyList) {
+            adapter.addItem(ContextCompat.getDrawable(getContext(), R.drawable.beco_logo), companyInfo.getCompanyName(), companyInfo.getCompanyAddress());
+        }
+        list.setAdapter(adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), company[position], Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), companyList.get(position).getCompanyName(), Toast.LENGTH_SHORT).show();
             }
         });
 

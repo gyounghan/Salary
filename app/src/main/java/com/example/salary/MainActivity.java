@@ -6,18 +6,26 @@ import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 
 import com.example.salary.Fragment.AllCompanyFragment;
-import com.example.salary.Fragment.AreaCompanyFragment;
-import com.example.salary.Fragment.CenterCompanyFragment;
+import com.example.salary.Fragment.LocalCompanyFragment;
+import com.example.salary.Fragment.CentralCompanyFragment;
+import com.example.salary.data.CompanyData;
 import com.example.salary.data.CompanyDataManager;
 import com.example.salary.data.DBHelper;
+import com.example.salary.data.SalaryData;
 import com.google.android.material.tabs.TabLayout;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabs;
     private Fragment allCompany = new AllCompanyFragment();
-    private Fragment centerCompany = new CenterCompanyFragment();
-    private Fragment areaCompany = new AreaCompanyFragment();
+    private Fragment centerCompany = new CentralCompanyFragment();
+    private Fragment areaCompany = new LocalCompanyFragment();
 
     private CompanyDataManager companyDBManager = null;
     private DBHelper dbHelper;
@@ -61,6 +69,47 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         dbHelper = new DBHelper(MainActivity.this ,3);
-//        companyDBManager = CompanyDataManager.getInstance(this);
+        initCompanyInfo();
+    }
+
+    private void initCompanyInfo() {
+        String json = "";
+
+        try {
+            InputStream is = getAssets().open("json/companyInfo.json");
+            int fileSize = is.available();
+
+            byte[] buffer = new byte[fileSize];
+            is.read(buffer);
+            is.close();
+
+            json = new String(buffer, "UTF-8");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray companyArray = jsonObject.getJSONArray("companyInfo");
+
+            for (int i=0;i<companyArray.length();i++) {
+                JSONObject companyObject = companyArray.getJSONObject(i);
+                CompanyData company = new CompanyData();
+
+                company.setCompanyName(companyObject.getString("name"));
+                company.setCompanyAddress(companyObject.getString("address"));
+                company.setCompanyType(companyObject.getString("type"));
+
+                SalaryData.getInstance().addArrayList(company);
+
+                SalaryData.getInstance().printArrayList();
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
