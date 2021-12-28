@@ -9,6 +9,7 @@ import com.example.salary.Fragment.AllCompanyFragment;
 import com.example.salary.Fragment.AreaCompanyFragment;
 import com.example.salary.Fragment.CenterCompanyFragment;
 import com.example.salary.data.CompanyDataManager;
+import com.example.salary.data.DBHelper;
 import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragment areaCompany = new AreaCompanyFragment();
 
     private CompanyDataManager companyDBManager = null;
+    private DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-        companyDBManager = CompanyDataManager.getInstance(this);
-
+        dbHelper = new DBHelper(MainActivity.this ,3);
+//        companyDBManager = CompanyDataManager.getInstance(this);
     }
 }

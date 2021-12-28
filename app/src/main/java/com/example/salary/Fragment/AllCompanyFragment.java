@@ -1,6 +1,7 @@
 package com.example.salary.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,11 @@ import androidx.fragment.app.Fragment;
 
 import com.example.salary.R;
 import com.example.salary.data.CompanyDataManager;
+import com.example.salary.data.DBHelper;
 
 public class AllCompanyFragment extends Fragment {
+
+    public DBHelper dbHelper = null;
 
     @Nullable
     @Override
@@ -26,9 +30,11 @@ public class AllCompanyFragment extends Fragment {
         // 리스트 추가
         final String[] company = {"한국예탁결제원", "한국수자원공사", "부산환경공단", "부산교통공사", "한국자산관리공사", "주택금융공사"};
 
+        dbHelper = new DBHelper(getContext(), 1);
         ListView list = (ListView) rootView.findViewById(R.id.companyList);
 
-        String[] companyList = CompanyDataManager.getCompanyList();
+        String companyInfo = dbHelper.getCompanyInfo();
+        String[] companyList = companyInfo.split(" ");
 //        String success = CompanyDataManager.getCompanyList();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, companyList);
         list.setAdapter(adapter);
