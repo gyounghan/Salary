@@ -32,7 +32,7 @@ public class CentralCompanyFragment extends Fragment {
         ArrayList<CompanyData> centralCompanyList = SalaryData.getInstance().getCentralCompanyList();
 
         ListView list = (ListView) rootView.findViewById(R.id.companyList);
-        ListViewAdapter adapter = new ListViewAdapter();
+        ListViewAdapter adapter = new ListViewAdapter(getContext());
 
         for (CompanyData centralCompany : centralCompanyList) {
             adapter.addItem(ContextCompat.getDrawable(getContext(), R.drawable.beco_logo), centralCompany.getCompanyName(), centralCompany.getCompanyAddress());

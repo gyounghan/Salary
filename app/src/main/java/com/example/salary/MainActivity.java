@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 
 import com.example.salary.Fragment.AllCompanyFragment;
 import com.example.salary.Fragment.LocalCompanyFragment;
@@ -26,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private Fragment allCompany = new AllCompanyFragment();
     private Fragment centerCompany = new CentralCompanyFragment();
     private Fragment areaCompany = new LocalCompanyFragment();
+
+    private EditText searchText;
 
     private CompanyDataManager companyDBManager = null;
     private DBHelper dbHelper;
@@ -70,6 +75,25 @@ public class MainActivity extends AppCompatActivity {
         });
         dbHelper = new DBHelper(MainActivity.this ,3);
         initCompanyInfo();
+
+//        searchText = findViewById(R.id.search);
+//
+//        searchText.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                String text = searchText.getText().toString();
+//            }
+//        });
     }
 
     private void initCompanyInfo() {
@@ -109,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     }
+
 }

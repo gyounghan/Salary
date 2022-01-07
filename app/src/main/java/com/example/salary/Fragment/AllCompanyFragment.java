@@ -1,12 +1,16 @@
 package com.example.salary.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -16,43 +20,85 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.salary.Adapter.ListViewAdapter;
+import com.example.salary.CompanyDetailActivity;
 import com.example.salary.R;
 import com.example.salary.data.CompanyData;
 import com.example.salary.data.CompanyDataManager;
 import com.example.salary.data.DBHelper;
+import com.example.salary.data.ListViewItem;
 import com.example.salary.data.SalaryData;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class AllCompanyFragment extends Fragment {
 
     public DBHelper dbHelper = null;
+    private EditText searchText;
+
+    private ArrayList<String> companyNameList = new ArrayList<String>();
+    private ArrayList<String> companyAddressList = new ArrayList<String>();
+    private ListViewAdapter adapter;
+    ListView list;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.activtiy_allcompany, container, false);
 
+        searchText = (EditText) rootView.findViewById(R.id.search);
+
         // 리스트 추가
-        final String[] company = {"한국예탁결제원", "한국수자원공사", "부산환경공단", "부산교통공사", "한국자산관리공사", "주택금융공사"};
         ArrayList<CompanyData> companyList = SalaryData.getInstance().getCompanyList();
 
-        ListView list = (ListView) rootView.findViewById(R.id.companyList);
+        list = (ListView) rootView.findViewById(R.id.companyList);
 
-        ListViewAdapter adapter = new ListViewAdapter();
+        adapter = new ListViewAdapter(getContext());
 
         for (CompanyData companyInfo : companyList) {
+            companyNameList.add(companyInfo.getCompanyName());
+            companyAddressList.add(companyInfo.getCompanyAddress());
             adapter.addItem(ContextCompat.getDrawable(getContext(), R.drawable.beco_logo), companyInfo.getCompanyName(), companyInfo.getCompanyAddress());
         }
         list.setAdapter(adapter);
+        list.setTextFilterEnabled(true);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), companyList.get(position).getCompanyName(), Toast.LENGTH_SHORT).show();
+                Intent companyInfo = new Intent(getContext(), CompanyDetailActivity.class);
+                companyInfo.putExtra("companyName", adapter.getListViewItem(position).getCompanyName());
+                startActivity(companyInfo);
+                Toast.makeText(getContext(), adapter.getListViewItem(position).getCompanyName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.e("fragment", "beforeTextChanged");
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.e("fragment", "onTextChanged");
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable search) {
+                String text = search.toString();
+                Log.e("fragment", "afterTextChanged : " + text.length());
+                if (text.length() > 0) {
+                    list.setFilterText(text);
+                } else {
+                    list.clearTextFilter();
+                }
             }
         });
 
         return rootView;
 
     }
+
 }

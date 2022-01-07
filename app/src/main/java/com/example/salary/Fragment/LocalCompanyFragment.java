@@ -31,11 +31,10 @@ public class LocalCompanyFragment extends Fragment {
 
         ArrayList<CompanyData> localcompanyList = SalaryData.getInstance().getLocalCompanyList();
 
-        final String[] company = {"부산교통공사", "부산환경공단", "서울교통공사", "대구환경공단", "대구교통공사"};
 
         ListView list = (ListView) rootView.findViewById(R.id.companyList);
 
-        ListViewAdapter adapter = new ListViewAdapter();
+        ListViewAdapter adapter = new ListViewAdapter(getContext());
 
         for (CompanyData localCompany : localcompanyList) {
             adapter.addItem(ContextCompat.getDrawable(getContext(), R.drawable.beco_logo), localCompany.getCompanyName(), localCompany.getCompanyAddress());
@@ -45,7 +44,7 @@ public class LocalCompanyFragment extends Fragment {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), company[position], Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), localcompanyList.get(position).getCompanyName(), Toast.LENGTH_SHORT).show();
             }
         });
 
