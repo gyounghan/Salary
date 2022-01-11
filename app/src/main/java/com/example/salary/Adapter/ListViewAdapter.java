@@ -87,7 +87,8 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
                 result.count = init_companyList.size();
             } else {
                 ArrayList<ListViewItem> itemList = new ArrayList<ListViewItem>();
-                for (ListViewItem item : companyList) {
+                for (ListViewItem item : init_companyList) {
+                    Log.e("ListViewAdater", "contains :" + constraint + " " + item.getCompanyName() + " " + item.getCompanyName().contains(constraint));
                     if (item.getCompanyName().contains(constraint)) {
                         itemList.add(item);
                     }

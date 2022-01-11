@@ -15,10 +15,13 @@
         <entry key="..\:/Users/hkh27/AndroidStudioProjects/Salary/app/src/main/res/layout/listviewitem.xml" value="0.536" />
         <entry key="app/src/main/res/drawable/btn_bg_orange.xml" value="0.1953125" />
         <entry key="app/src/main/res/drawable/btn_bg_orange_selected.xml" value="0.1953125" />
-        <entry key="app/src/main/res/layout/activity_companydetail.xml" value="0.17916666666666667" />
+        <entry key="app/src/main/res/layout/activity_centercompany.xml" value="0.27239583333333334" />
+        <entry key="app/src/main/res/layout/activity_companydetail.xml" value="0.28018223234624146" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activtiy_allcompany.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/bottom_sheet_layout.xml" value="0.17222222222222222" />
         <entry key="app/src/main/res/layout/listviewitem.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/profileview.xml" value="0.19322916666666667" />
       </map>
     </option>
   </component>

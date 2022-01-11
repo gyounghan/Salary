@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 
 import com.example.salary.Fragment.AllCompanyFragment;
@@ -22,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -115,13 +117,20 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             JSONObject jsonObject = new JSONObject(json);
-            JSONArray companyArray = jsonObject.getJSONArray("companyInfo");
+            String jsonValue = jsonObject.getString("companyInfo");
+            JSONObject companyInfo = new JSONObject(jsonValue);
 
-            for (int i=0;i<companyArray.length();i++) {
-                JSONObject companyObject = companyArray.getJSONObject(i);
+            SalaryData.getInstance().setJsonData(companyInfo);
+
+            Iterator i = companyInfo.keys();
+
+            while(i.hasNext())
+            {
+                String companyName= i.next().toString();
+                JSONObject companyObject = new JSONObject(companyInfo.getString(companyName));
                 CompanyData company = new CompanyData();
 
-                company.setCompanyName(companyObject.getString("name"));
+                company.setCompanyName(companyName);
                 company.setCompanyAddress(companyObject.getString("address"));
                 company.setCompanyType(companyObject.getString("type"));
 
@@ -129,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
                 SalaryData.getInstance().printArrayList();
 
+                Log.d("[han]",companyName);
             }
         } catch (JSONException e) {
             e.printStackTrace();

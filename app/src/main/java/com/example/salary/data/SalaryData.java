@@ -1,10 +1,14 @@
 package com.example.salary.data;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class SalaryData {
 
     public static SalaryData salaryData = null;
+    public static JSONObject jsonData = null;
+
 
     private SalaryData() {
 
@@ -85,5 +89,13 @@ public class SalaryData {
             }
         }
         return localcompanyList;
+    }
+
+    public static JSONObject getJsonData() {
+        return jsonData;
+    }
+
+    public static void setJsonData(JSONObject jsonData) {
+        SalaryData.jsonData = jsonData;
     }
 }
