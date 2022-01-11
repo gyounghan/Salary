@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.salary.Fragment.BottomSheetDialog;
 import com.example.salary.data.SalaryData;
 
 import org.json.JSONArray;
@@ -24,7 +25,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class CompanyDetailActivity extends Activity {
+public class CompanyDetailActivity extends AppCompatActivity implements BottomSheetDialog.BottomSheetListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,7 +79,9 @@ public class CompanyDetailActivity extends Activity {
 
             @Override
             public void onClick(View v) {
-                detailPage.setVisibility(View.INVISIBLE);
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
+                bottomSheetDialog.show(getSupportFragmentManager(), "bottomsheet");
+
             }
         });
 
@@ -98,6 +101,11 @@ public class CompanyDetailActivity extends Activity {
             salaryView.addView(button);
         }
 
+    }
+
+    @Override
+    public void onButtonClickeed(String text) {
+        
     }
 
     private class SlidingPageAnimationListner implements Animation.AnimationListener {
