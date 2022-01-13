@@ -5,6 +5,7 @@ public class CompanyData {
     private String companyName;
     private String companyAddress;
     private String companyType;
+    private String companyLogo;
 
 
     public String getCompanyName() {
@@ -29,5 +30,13 @@ public class CompanyData {
 
     public void setCompanyType(String companyType) {
         this.companyType = companyType;
+    }
+
+    public String getCompanyLogo() {
+        return companyLogo;
+    }
+
+    public void setCompanyLogo(String companyLogo) {
+        this.companyLogo = companyLogo;
     }
 }

@@ -22,14 +22,12 @@ import com.example.salary.Adapter.ListViewAdapter;
 import com.example.salary.CompanyDetailActivity;
 import com.example.salary.R;
 import com.example.salary.data.CompanyData;
-import com.example.salary.data.DBHelper;
 import com.example.salary.data.SalaryData;
 
 import java.util.ArrayList;
 
-public class AllCompanyFragment extends Fragment {
+public class MypageFragment extends Fragment {
 
-    public DBHelper dbHelper = null;
     private EditText searchText;
 
     private ArrayList<String> companyNameList = new ArrayList<String>();
@@ -45,7 +43,7 @@ public class AllCompanyFragment extends Fragment {
         searchText = (EditText) rootView.findViewById(R.id.search);
 
         // 리스트 추가
-        ArrayList<CompanyData> companyList = SalaryData.getInstance().getCompanyList();
+        ArrayList<CompanyData> companyList = SalaryData.getInstance().getMyPageCompanyList();
 
         listView = (ListView) rootView.findViewById(R.id.companyList);
 
@@ -54,14 +52,15 @@ public class AllCompanyFragment extends Fragment {
         for (CompanyData companyInfo : companyList) {
             companyNameList.add(companyInfo.getCompanyName());
             companyAddressList.add(companyInfo.getCompanyAddress());
-            adapter.addItem(ContextCompat.getDrawable(getContext(), getResources().getIdentifier(companyInfo.getCompanyLogo(),"drawable", getContext().getPackageName())), companyInfo.getCompanyName(), companyInfo.getCompanyAddress());
+            adapter.addItem(ContextCompat.getDrawable(getContext(), R.drawable.beco_logo), companyInfo.getCompanyName(), companyInfo.getCompanyAddress());
         }
+
         listView.setAdapter(adapter);
         listView.setTextFilterEnabled(true);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.e("[AllCompanyFragement]", "clickListView: " + id);
+                Log.e("[MyCompanyFragement]", "clickListView");
                 Intent companyInfo = new Intent(getContext(), CompanyDetailActivity.class);
                 companyInfo.putExtra("companyName", adapter.getListViewItem(position).getCompanyName());
                 startActivity(companyInfo);

@@ -10,10 +10,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.salary.Fragment.BottomSheetDialog;
 import com.example.salary.data.SalaryData;
@@ -32,14 +35,11 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_companydetail);
 
-        TextView companyText = findViewById(R.id.companyInfo);
         ImageView companyImage = findViewById(R.id.companyImage);
 
 
         Intent companyInfo = getIntent();
         String companyName = companyInfo.getExtras().getString("companyName");
-        companyText.setText(companyName);
-
 
         JSONObject jsonObject = SalaryData.getInstance().getJsonData();
 
@@ -51,12 +51,22 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
             imageView.setImageResource( iResId );
 
             String companyAddress = companyObject.getString("address");
+            String grade = companyObject.getString("grade");
+            String senerity = companyObject.getString("senerity");
+
+            TextView gradeView = findViewById(R.id.grade);
+            RatingBar gradeRating = findViewById(R.id.gradeRating);
+            TextView senerityView = findViewById(R.id.senerity);
 
             TextView companyNameTextView = findViewById(R.id.companyName);
             TextView companyAddressTextView = findViewById(R.id.companyAddress);
 
             companyAddressTextView.setText(companyAddress);
             companyNameTextView.setText(companyName);
+
+            gradeView.setText(grade);
+            senerityView.setText("근속연수 : " + senerity);
+            gradeRating.setRating(Float.parseFloat(grade));
 
             JSONArray companySalary = companyObject.getJSONArray("salary");
 
@@ -71,20 +81,6 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
     public void addButton(JSONArray companySalary) throws JSONException {
         LinearLayout salaryView = findViewById(R.id.salaryView);
 
-        LinearLayout detailPage = findViewById(R.id.detailPage);
-        Animation translateUpAnim = AnimationUtils.loadAnimation(this, R.anim.translate_up);
-
-        Button close_button = findViewById(R.id.close);
-        close_button.setOnClickListener(new Button.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
-                bottomSheetDialog.show(getSupportFragmentManager(), "bottomsheet");
-
-            }
-        });
-
         for(int i=0;i<companySalary.length();i++) {
             Button button = new Button(this);
             System.out.println(String.valueOf(companySalary.get(i)));
@@ -93,8 +89,8 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
 
                 @Override
                 public void onClick(View v) {
-                    detailPage.setVisibility(View.VISIBLE);
-                    detailPage.startAnimation(translateUpAnim);
+                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
+                    bottomSheetDialog.show(getSupportFragmentManager(), "bottomsheet");
                     Log.e("[detailActivity]", "onClick");
                 }
             });
@@ -105,7 +101,7 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
 
     @Override
     public void onButtonClickeed(String text) {
-        
+
     }
 
     private class SlidingPageAnimationListner implements Animation.AnimationListener {

@@ -3,6 +3,8 @@ package com.example.salary;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.app.slice.Slice;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,9 +14,11 @@ import android.widget.EditText;
 import com.example.salary.Fragment.AllCompanyFragment;
 import com.example.salary.Fragment.LocalCompanyFragment;
 import com.example.salary.Fragment.CentralCompanyFragment;
+import com.example.salary.Fragment.MypageFragment;
 import com.example.salary.data.CompanyData;
 import com.example.salary.data.CompanyDataManager;
 import com.example.salary.data.DBHelper;
+import com.example.salary.data.PreferenceManager;
 import com.example.salary.data.SalaryData;
 import com.google.android.material.tabs.TabLayout;
 
@@ -31,8 +35,12 @@ public class MainActivity extends AppCompatActivity {
     private Fragment allCompany = new AllCompanyFragment();
     private Fragment centerCompany = new CentralCompanyFragment();
     private Fragment areaCompany = new LocalCompanyFragment();
+    private Fragment myCompany = new MypageFragment();
+
+    private SalaryData salaryData = null;
 
     private EditText searchText;
+    private PreferenceManager prefs = null;
 
     private CompanyDataManager companyDBManager = null;
     private DBHelper dbHelper;
@@ -42,11 +50,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        salaryData = SalaryData.getInstance();
         // tabView
         tabs = findViewById(R.id.tabs);
         tabs.addTab(tabs.newTab().setText("전체"));
         tabs.addTab(tabs.newTab().setText("중앙"));
         tabs.addTab(tabs.newTab().setText("지방"));
+        tabs.addTab(tabs.newTab().setText("마이페이지"));
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, allCompany).commit();
 
@@ -61,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
                     selected = centerCompany;
                 } else if (position == 2) {
                     selected = areaCompany;
+                } else if (position == 3) {
+                    selected = myCompany;
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, selected).commit();
             }
@@ -75,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        PreferenceManager.preferenceManager.getInstance().setContext(getApplication());
         dbHelper = new DBHelper(MainActivity.this ,3);
         initCompanyInfo();
 
@@ -92,8 +105,7 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //
 //            @Override
-//            public void afterTextChanged(Editable s) {
-//                String text = searchText.getText().toString();
+//                 String text = searchText.getText().toString();
 //            }
 //        });
     }
@@ -120,8 +132,8 @@ public class MainActivity extends AppCompatActivity {
             String jsonValue = jsonObject.getString("companyInfo");
             JSONObject companyInfo = new JSONObject(jsonValue);
 
-            SalaryData.getInstance().setJsonData(companyInfo);
-
+            salaryData.setJsonData(companyInfo);
+            salaryData.clearArrayList();
             Iterator i = companyInfo.keys();
 
             while(i.hasNext())
@@ -133,10 +145,11 @@ public class MainActivity extends AppCompatActivity {
                 company.setCompanyName(companyName);
                 company.setCompanyAddress(companyObject.getString("address"));
                 company.setCompanyType(companyObject.getString("type"));
+                company.setCompanyLogo(companyObject.getString("logo"));
 
-                SalaryData.getInstance().addArrayList(company);
+                salaryData.addArrayList(company);
 
-                SalaryData.getInstance().printArrayList();
+                salaryData.printArrayList();
 
                 Log.d("[han]",companyName);
             }

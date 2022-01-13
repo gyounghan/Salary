@@ -1,21 +1,30 @@
 package com.example.salary.Adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.salary.R;
 import com.example.salary.data.ListViewItem;
+import com.example.salary.data.PreferenceManager;
+import com.example.salary.data.SalaryData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 public class ListViewAdapter extends BaseAdapter implements Filterable {
 
@@ -47,6 +56,9 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // listviewitem 리소스를 view로 변환
+
+        PreferenceManager prefs = PreferenceManager.getInstance();
+
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.listviewitem, parent, false);
@@ -56,12 +68,45 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
         ImageView companyImage = (ImageView) convertView.findViewById(R.id.companyView);
         TextView companyName = (TextView) convertView.findViewById(R.id.companyName);
         TextView companyAddress = (TextView) convertView.findViewById(R.id.companyAddress);
+        CheckBox companyCheck = (CheckBox) convertView.findViewById(R.id.btn_selector);
+
+        companyCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                String checkInfo = prefs.getString("checkList");
+                String checkResult = "";
+                HashSet<String> checkList = new HashSet<>();
+                String[] temp = checkInfo.split(" ");
+                for (String checkCompany : temp) {
+                    checkList.add(checkCompany);
+                }
+
+                if (isChecked) {
+                    checkList.add(companyList.get(position).getCompanyName());
+                } else {
+                    checkList.remove(companyList.get(position).getCompanyName());
+
+                }
+
+                for (String check : checkList) {
+                    checkResult = checkResult + " " + check;
+                }
+                prefs.setString("checkList", checkResult);
+            }
+        });
 
         ListViewItem companyListViewItem = companyList.get(position);
 
         companyImage.setImageDrawable(companyListViewItem.getDrawable());
         companyName.setText(companyListViewItem.getCompanyName());
         companyAddress.setText(companyListViewItem.getCompanyAddress());
+
+        String checkCompanyInfo = prefs.getString("checkList");
+        List<String> checkList = Arrays.asList(checkCompanyInfo.split(" "));
+        if (checkList.contains(companyListViewItem.getCompanyName())) {
+            companyCheck.setChecked(true);
+        }
+
 
         return convertView;
     }
@@ -123,5 +168,9 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
 
     public ListViewItem getListViewItem(int position) {
         return companyList.get(position);
+    }
+
+    public interface MyEventListener {
+        void onMyEvent(String text);
     }
 }
