@@ -3,10 +3,12 @@ package com.example.salary;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.salary.Adapter.ImageAdapter;
 import com.example.salary.Fragment.BottomSheetDialog;
 import com.example.salary.data.SalaryData;
 
@@ -28,15 +31,22 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import me.relex.circleindicator.CircleIndicator3;
+
 public class CompanyDetailActivity extends AppCompatActivity implements BottomSheetDialog.BottomSheetListener {
+
+    private ViewPager2 mPager;
+    private ImageAdapter pagerAdapter;
+    private int num_page = 2;
+    private CircleIndicator3 mIndicator;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_companydetail);
 
-        ImageView companyImage = findViewById(R.id.companyImage);
-
+//        ImageView companyImage = findViewById(R.id.companyImage);
 
         Intent companyInfo = getIntent();
         String companyName = companyInfo.getExtras().getString("companyName");
@@ -46,13 +56,16 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
         try {
             JSONObject companyObject = new JSONObject(jsonObject.getString(companyName));
 
-            int iResId = getResources().getIdentifier( "@drawable/" + companyObject.getString("logo"), "drawable", this.getPackageName() );
-            ImageView imageView = findViewById( R.id.companyImage );
-            imageView.setImageResource( iResId );
+//            int iResId = getResources().getIdentifier( "@drawable/" + companyObject.getString("logo"), "drawable", this.getPackageName() );
+//            ImageView imageView = findViewById( R.id.companyImage );
+//            imageView.setImageResource( iResId );
 
             String companyAddress = companyObject.getString("address");
             String grade = companyObject.getString("grade");
             String senerity = companyObject.getString("senerity");
+            String companyId = companyObject.getString("companyId");
+
+            setmPager(companyId);
 
             TextView gradeView = findViewById(R.id.grade);
             RatingBar gradeRating = findViewById(R.id.gradeRating);
@@ -75,7 +88,44 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
+    public void setmPager(String companyId) {
+        int[] imageResources = new int[2];
+        imageResources[0] = getResources().getIdentifier( "@drawable/" + companyId , "drawable", this.getPackageName() );
+        imageResources[1] = getResources().getIdentifier( "@drawable/" + companyId + "_map", "drawable", this.getPackageName() );
+
+
+        mPager = findViewById(R.id.viewPager);
+
+        pagerAdapter = new ImageAdapter(this, imageResources);
+        mPager.setAdapter(pagerAdapter);
+
+        //Indicator
+        mIndicator = findViewById(R.id.indicator);
+        mIndicator.setViewPager(mPager);
+        mIndicator.createIndicators(num_page, 0);
+
+        mPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        mPager.setCurrentItem(1000);
+        mPager.setOffscreenPageLimit(4);
+
+        mPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            // 스와이프로 인해 한 이미지가 선택되기전 계속 호출
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+                if (positionOffsetPixels == 0) {
+                    mPager.setCurrentItem(position);
+                }
+            }
+
+            //스와이프로 인해 이미지 선택시 호
+           public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                mIndicator.animatePageSelected(position%num_page);
+            }
+        });
     }
 
     public void addButton(JSONArray companySalary) throws JSONException {
