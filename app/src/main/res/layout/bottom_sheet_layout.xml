@@ -1,51 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/temptextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/temptextView"
-        android:text="바텀 시트 다이얼로그입니다"/>
+        android:text="바텀 시트 다이얼로그입니다" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/baseSalary"
-        android:text="기본급   : "/>
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="기본급   : " />
+
+    <TextView
         android:id="@+id/fixedAllowance"
-        android:text="고정수당  : "/>
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="고정수당  : " />
+
+    <TextView
         android:id="@+id/employeeBenefit"
-        android:text="복지후생비 : "/>
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="복지후생비 : " />
+
+    <TextView
         android:id="@+id/performanceAllowance"
-        android:text="실적수당  : "/>
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="실적수당  : " />
+
+    <TextView
         android:id="@+id/realAmount"
-        android:text="실수령액  : "/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="실수령액  : " />
 
     <Button
+        android:id="@+id/btn_hide_bt_sheet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_hide_bt_sheet"
+        android:backgroundTint="#D62424"
         android:text="Hide Bottom sheet" />
 
 

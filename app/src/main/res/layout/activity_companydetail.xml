@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,22 +8,33 @@
     android:weightSum="6">
 
 
-<!--    <ImageView-->
-<!--        android:id="@+id/companyImage"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content" />-->
+    <!--    <ImageView-->
+    <!--        android:id="@+id/companyImage"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content" />-->
 
-    <androidx.viewpager2.widget.ViewPager2
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-        android:layout_weight="3"
-            android:id="@+id/viewPager"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="3">
 
-    <me.relex.circleindicator.CircleIndicator3
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/layoutIndicators"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/indicator"
-            android:layout_gravity="bottom"/>
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="@id/viewPager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <LinearLayout
@@ -31,7 +43,7 @@
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/circle_v"
+            android:id="@+id/circle_imageView"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center"
@@ -92,9 +104,9 @@
                     android:id="@+id/senerity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="근속연수 : 00"
                     android:layout_gravity="left"
-                    android:layout_marginRight="10dp"/>
+                    android:layout_marginRight="10dp"
+                    android:text="근속연수 : 00" />
 
             </LinearLayout>
 

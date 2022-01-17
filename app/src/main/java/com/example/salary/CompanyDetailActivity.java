@@ -2,10 +2,12 @@ package com.example.salary;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Adapter;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -31,6 +34,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import me.relex.circleindicator.CircleIndicator3;
 
 public class CompanyDetailActivity extends AppCompatActivity implements BottomSheetDialog.BottomSheetListener {
@@ -39,7 +43,7 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
     private ImageAdapter pagerAdapter;
     private int num_page = 2;
     private CircleIndicator3 mIndicator;
-
+    private LinearLayout layoutIndicator;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +57,8 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
 
         JSONObject jsonObject = SalaryData.getInstance().getJsonData();
 
+        CircleImageView circleImageView = findViewById(R.id.circle_imageView);
+
         try {
             JSONObject companyObject = new JSONObject(jsonObject.getString(companyName));
 
@@ -64,6 +70,8 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
             String grade = companyObject.getString("grade");
             String senerity = companyObject.getString("senerity");
             String companyId = companyObject.getString("companyId");
+            int imageId = getResources().getIdentifier( "@drawable/" + companyObject.getString("logo"), "drawable", this.getPackageName() );
+            circleImageView.setImageResource(imageId);
 
             setmPager(companyId);
 
@@ -97,17 +105,13 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
 
 
         mPager = findViewById(R.id.viewPager);
+        layoutIndicator = findViewById(R.id.layoutIndicators);
 
         pagerAdapter = new ImageAdapter(this, imageResources);
         mPager.setAdapter(pagerAdapter);
 
-        //Indicator
-        mIndicator = findViewById(R.id.indicator);
-        mIndicator.setViewPager(mPager);
-        mIndicator.createIndicators(num_page, 0);
-
         mPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-        mPager.setCurrentItem(1000);
+        mPager.setCurrentItem(0);
         mPager.setOffscreenPageLimit(4);
 
         mPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -115,17 +119,43 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                if (positionOffsetPixels == 0) {
-                    mPager.setCurrentItem(position);
-                }
             }
 
             //스와이프로 인해 이미지 선택시 호
            public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                mIndicator.animatePageSelected(position%num_page);
+                setCurrentIndicator(position);
             }
         });
+
+        setupIndicators(imageResources.length);
+    }
+
+    public void setupIndicators(int count) {
+        ImageView[] indicators = new ImageView[count];
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        params.setMargins(16, 8, 16, 8);
+
+        for (int i = 0; i < indicators.length; i++) {
+            indicators[i] = new ImageView(this);
+            indicators[i].setImageDrawable(ContextCompat.getDrawable(this, R.drawable.bg_indicator_inactive));
+            indicators[i].setLayoutParams(params);
+            layoutIndicator.addView(indicators[i]);
+        }
+        setCurrentIndicator(0);
+    }
+
+    public void setCurrentIndicator(int position) {
+        int childCount = layoutIndicator.getChildCount();
+        for (int i=0; i<childCount; i++) {
+            ImageView imageView = (ImageView) layoutIndicator.getChildAt(i);
+            if (i == position) {
+                imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.bg_indicator_active));
+            } else {
+                imageView.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.bg_indicator_inactive));
+            }
+        }
     }
 
     public void addButton(JSONArray companySalary) throws JSONException {
@@ -136,7 +166,6 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
             System.out.println(String.valueOf(companySalary.get(i)));
             button.setText(String.valueOf(companySalary.get(i)));
             button.setOnClickListener(new Button.OnClickListener(){
-
                 @Override
                 public void onClick(View v) {
                     BottomSheetDialog bottomSheetDialog = new BottomSheetDialog();
