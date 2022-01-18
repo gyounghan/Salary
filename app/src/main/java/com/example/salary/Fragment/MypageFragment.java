@@ -19,7 +19,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.salary.Adapter.ListViewAdapter;
-import com.example.salary.CompanyDetailActivity;
 import com.example.salary.R;
 import com.example.salary.data.CompanyData;
 import com.example.salary.data.SalaryData;
