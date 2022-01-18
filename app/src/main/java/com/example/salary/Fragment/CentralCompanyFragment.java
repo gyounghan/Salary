@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.salary.Adapter.ListViewAdapter;
 import com.example.salary.R;
+import com.example.salary.Utils.Utils;
 import com.example.salary.data.CompanyData;
 import com.example.salary.data.SalaryData;
 
@@ -35,7 +36,10 @@ public class CentralCompanyFragment extends Fragment {
         ListViewAdapter adapter = new ListViewAdapter(getContext());
 
         for (CompanyData centralCompany : centralCompanyList) {
-            adapter.addItem(ContextCompat.getDrawable(getContext(), R.drawable.beco_logo), centralCompany.getCompanyName(), centralCompany.getCompanyAddress());
+            adapter.addItem(ContextCompat.getDrawable(getContext(), getResources().getIdentifier(centralCompany.getCompanyLogo(), "drawable", getContext().getPackageName())),
+                    centralCompany.getCompanyName(),
+                    centralCompany.getCompanyAddress(),
+                    Utils.FRAGMENT_CENTRALCOMPANY);
         }
         list.setAdapter(adapter);
 

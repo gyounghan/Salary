@@ -18,8 +18,10 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.salary.Activity.CompanyDetailActivity;
 import com.example.salary.Adapter.ListViewAdapter;
 import com.example.salary.R;
+import com.example.salary.Utils.Utils;
 import com.example.salary.data.CompanyData;
 import com.example.salary.data.DBHelper;
 import com.example.salary.data.SalaryData;
@@ -53,7 +55,11 @@ public class AllCompanyFragment extends Fragment {
         for (CompanyData companyInfo : companyList) {
             companyNameList.add(companyInfo.getCompanyName());
             companyAddressList.add(companyInfo.getCompanyAddress());
-            adapter.addItem(ContextCompat.getDrawable(getContext(), getResources().getIdentifier(companyInfo.getCompanyLogo(),"drawable", getContext().getPackageName())), companyInfo.getCompanyName(), companyInfo.getCompanyAddress());
+            adapter.addItem(ContextCompat.getDrawable(getContext(),
+                    getResources().getIdentifier(companyInfo.getCompanyLogo(), "drawable", getContext().getPackageName())),
+                    companyInfo.getCompanyName(),
+                    companyInfo.getCompanyAddress(),
+                    Utils.FRAGMENT_ALLCOMPANY);
         }
         listView.setAdapter(adapter);
         listView.setTextFilterEnabled(true);

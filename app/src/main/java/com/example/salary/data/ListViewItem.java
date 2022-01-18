@@ -8,6 +8,7 @@ public class ListViewItem {
     private Drawable drawable;
     private String companyName;
     private String companyAddress;
+    private String fragment_name;
 
     public ListViewItem()
     {
@@ -35,5 +36,13 @@ public class ListViewItem {
 
     public void setCompanyAddress(String companyAddress) {
         this.companyAddress = companyAddress;
+    }
+
+    public String getFragment_name() {
+        return fragment_name;
+    }
+
+    public void setFragment_name(String fragment_name) {
+        this.fragment_name = fragment_name;
     }
 }

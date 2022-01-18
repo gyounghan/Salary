@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.health.ServiceHealthStats;
 
+import java.util.HashSet;
+
 public class PreferenceManager {
     public static PreferenceManager preferenceManager = null;
 
@@ -92,6 +94,46 @@ public class PreferenceManager {
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove(key);
         editor.commit();
+    }
+
+    public void addMypageCompanyList(String companyName) {
+        String checkCompanyValue = preferenceManager.getString("checkList");
+
+        String result = "";
+
+        HashSet<String> checkCompanyList = new HashSet<>();
+
+        String[] checkCompanyArray = checkCompanyValue.split(" ");
+        for (String checkCompany : checkCompanyArray) {
+            checkCompanyList.add(checkCompany);
+        }
+
+        checkCompanyList.add(companyName);
+
+        for (String company : checkCompanyList) {
+            result = result + " " + company;
+        }
+        preferenceManager.setString("checkList", result);
+    }
+
+    public void removeMypageCompanyList(String companyName) {
+       String checkCompanyValue = preferenceManager.getString("checkList");
+
+        String result = "";
+
+        HashSet<String> checkCompanyList = new HashSet<>();
+
+        String[] checkCompanyArray = checkCompanyValue.split(" ");
+        for (String checkCompany : checkCompanyArray) {
+            checkCompanyList.add(checkCompany);
+        }
+
+        checkCompanyList.remove(companyName);
+
+        for (String company : checkCompanyList) {
+            result = result + " " + company;
+        }
+        preferenceManager.setString("checkList", result);
     }
 
     public void clear() {

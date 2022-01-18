@@ -21,6 +21,7 @@
         <entry key="app/src/main/res/drawable/btn_bg_orange_selected.xml" value="0.1953125" />
         <entry key="app/src/main/res/drawable/custom_button.xml" value="0.25" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.25555555555555554" />
+        <entry key="app/src/main/res/drawable/text_cursor.xml" value="0.2462962962962963" />
         <entry key="app/src/main/res/layout/activity_areacompany.xml" value="0.1388888888888889" />
         <entry key="app/src/main/res/layout/activity_centercompany.xml" value="0.27239583333333334" />
         <entry key="app/src/main/res/layout/activity_companydetail.xml" value="0.28018223234624146" />

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -18,8 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.salary.Activity.CompanyDetailActivity;
+import com.example.salary.Activity.MyPageCustomDialog;
 import com.example.salary.Adapter.ListViewAdapter;
 import com.example.salary.R;
+import com.example.salary.Utils.Utils;
 import com.example.salary.data.CompanyData;
 import com.example.salary.data.SalaryData;
 
@@ -27,12 +31,27 @@ import java.util.ArrayList;
 
 public class MypageFragment extends Fragment {
 
+    public static MypageFragment mypageFragment = null;
+
     private EditText searchText;
 
     private ArrayList<String> companyNameList = new ArrayList<String>();
     private ArrayList<String> companyAddressList = new ArrayList<String>();
-    private ListViewAdapter adapter;
-    ListView listView;
+    public static ListViewAdapter adapter;
+    public ListView listView;
+
+    public MyPageCustomDialog myPageCustomDialog;
+
+    public MypageFragment() {
+
+    }
+
+    public static MypageFragment getInstance() {
+        if (mypageFragment == null) {
+            mypageFragment = new MypageFragment();
+        }
+        return mypageFragment;
+    }
 
     @Nullable
     @Override
@@ -51,8 +70,13 @@ public class MypageFragment extends Fragment {
         for (CompanyData companyInfo : companyList) {
             companyNameList.add(companyInfo.getCompanyName());
             companyAddressList.add(companyInfo.getCompanyAddress());
-            adapter.addItem(ContextCompat.getDrawable(getContext(), R.drawable.beco_logo), companyInfo.getCompanyName(), companyInfo.getCompanyAddress());
+            adapter.addItem(ContextCompat.getDrawable(getContext(),
+                    getResources().getIdentifier(companyInfo.getCompanyLogo(), "drawable", getContext().getPackageName())),
+                    companyInfo.getCompanyName(),
+                    companyInfo.getCompanyAddress(),
+                    Utils.FRAGMENT_MYPAGE);
         }
+
 
         listView.setAdapter(adapter);
         listView.setTextFilterEnabled(true);
@@ -96,4 +120,12 @@ public class MypageFragment extends Fragment {
 
     }
 
+    public void showDialog(String companyName, CheckBox checkbox) {
+        myPageCustomDialog = new MyPageCustomDialog(getContext(), companyName, checkbox);
+        myPageCustomDialog.show();
+    }
+
+    public ListViewAdapter getAdapter() {
+        return adapter;
+    }
 }

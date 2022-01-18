@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:text="즐겨찾기에서 제거할까요?"
+        android:text="마이페이지에서 제거할까요?"
         android:gravity="center"/>
 
     <LinearLayout
@@ -23,15 +23,27 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/confirm_button"
-            android:text="예" />
+            android:gravity="center"
+            android:text="확 인"
+            android:autoSizeTextType="uniform"
+            android:textColor="#000000"
+            android:background="#ffffff" />
 
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#000000" />
 
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:id="@+id/reject_button"
-            android:text="아니오" />
+            android:gravity="center"
+            android:text="취 소"
+            android:autoSizeTextType="uniform"
+            android:textColor="#000000"
+            android:background="#ffffff" />
 
     </LinearLayout>
 

@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Salary">
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".CompanyDetailActivity"/>
+        <activity android:name=".Activity.CompanyDetailActivity"/>
+<!--        <activity android:name=".Activity.MyPageCustomDialog" android:theme="@style/Theme.AppCompat.Dialog"/>-->
     </application>
 
 </manifest>
