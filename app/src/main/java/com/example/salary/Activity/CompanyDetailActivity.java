@@ -1,5 +1,6 @@
 package com.example.salary.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -7,12 +8,14 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -21,13 +24,23 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.salary.Adapter.ImageAdapter;
 import com.example.salary.Fragment.BottomSheetDialog;
+import com.example.salary.MyMarkView;
 import com.example.salary.R;
 import com.example.salary.data.SalaryData;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +48,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import me.relex.circleindicator.CircleIndicator3;
@@ -47,6 +61,10 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
     private CircleIndicator3 mIndicator;
     private LinearLayout layoutIndicator;
     private String companyName;
+
+    private JSONArray companySalary;
+    private Button testbutton;
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +79,19 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
         JSONObject jsonObject = SalaryData.getInstance().getJsonData();
 
         ImageView companyLogoView = findViewById(R.id.company_logoView);
+
+        drawerLayout = findViewById(R.id.drawerLayout);
+
+        testbutton = findViewById(R.id.test);
+        testbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                    drawerLayout.openDrawer(Gravity.RIGHT);
+                }
+            }
+        });
 
         try {
             JSONObject companyObject = new JSONObject(jsonObject.getString(companyName));
@@ -92,9 +123,10 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
             senerityView.setText("근속연수 : " + senerity);
             gradeRating.setRating(Float.parseFloat(grade));
 
-            JSONArray companySalary = companyObject.getJSONArray("salary");
+            companySalary = companyObject.getJSONArray("salary");
 
             addButton(companySalary);
+            setLineChart();
             Log.e("companyDetailActivity", "salary:" + companySalary.get(20));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -184,6 +216,135 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
             salaryView.addView(button);
         }
 
+    }
+
+    //setDrawGridBackground : 그레프에 수치 구분선
+    //
+    //isDragEnabled : 드레그 true/false
+    //isScaleYEnabled : y축으로 늘리기 true/false
+    //isScaleXEnabled : x축으로 늘리기 true/false
+    //
+    //xAxis.isEnabled  : x축 노출 true/false
+    //axisLeft.isEnabled  : y축 왼쪽 노출 true/ false
+    //axisLeft.setDrawAxisLine : y축 왼쪽 라인 노출 true/ false
+    //axisLeft.setDrawGridLines : y축 왼쪽 라인 gride 노출 true/ false
+    //axisLeft.setDrawLabels : y축 왼쪽 라인에 라벨 노출  true/ false
+    //axisRight.setDrawAxisLine : y 축 오른쪽 라인 노출 true/ fasle
+    //axisRight.setDrawGridLines :  y축 오른쪽 라인 gride 노출 true/ false
+    //axisRight.isEnabled  : y축 오른쪽 라인 사용 true/ false
+    //xAxis.setDrawAxisLine : x축  노출 true/ false
+    //xAxis.setDrawGridLines : x축  gride 노출 true/ false
+    //
+    //yAxis = axisLeft : y축 왼쪽 획득
+    //yAxis.axisMaximum  : y축 최고값 셋팅
+    //yAxis.axisMinimum : y 축 최저값 셋팅
+    //highlightValue : 그래프 선택시 그 수치를 기준으로 나타나는 십자가 선
+    //setMode : 라인 차트일 경우 그려지는 종류를 선택할 수 있습니다. (LINEAR/STEPPED/CUBIC_BEZIER/HORIZONTAL_BEZIER)
+    //LimitLine : 제한 선으로 그래프 위에 따로 그려집니다.
+    //그리고 라인 색과, 하이 라이트 색을 선택 셋팅 할 수 있으며( 셋팅은 R G B 값을 Hex 값으로 입력)
+    //setDrawFilled ; 그래프 하단으로 색상 채우기
+    //IFillFormatter : 색상을 어느 수치까지 채울지 선택
+    //fillDrawable : 채워질 색상 선택 (그라데이션으로도 가능)
+    //setDrawCircles : 각 수치를 원으로  표시
+    //animateX : 그래프 그릴 시 x축 애니메이션으로
+    //animateY : 그래프 그릴 시 Y축 애니메이션으로
+    //invalidate : 다시 그리기
+    //legend.isEnabled : 그래프 설명 사용 여부 true/false
+
+    @SuppressLint("ClickableViewAccessibility")
+    public void setLineChart() throws JSONException {
+        MyMarkView marker = new MyMarkView(this, R.layout.custommaker);
+        LineChart lineChart = findViewById(R.id.linechart);
+        List<Entry> entries = new ArrayList<>();
+        HorizontalScrollView horizontalScrollView = findViewById(R.id.graph_scrollView);
+
+        lineChart.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.e("[CompanyDeatilActivity]", "linechart event: " + event.getAction());
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_SCROLL:
+                    case MotionEvent.ACTION_MOVE:
+                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                    case MotionEvent.ACTION_UP:
+                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                        break;
+                    default :
+                        break;
+                }
+
+                return false;
+            }
+        });
+
+        horizontalScrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.e("[CompanyDeatilActivity]", "horizontalScrollView event: " + event.getAction());
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_SCROLL:
+                    case MotionEvent.ACTION_MOVE:
+                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                    case MotionEvent.ACTION_UP:
+                        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+                        break;
+                    default :
+                        break;
+                }
+
+                return false;
+            }
+        });
+
+        for (int i=0;i<companySalary.length();i++) {
+            String value = companySalary.get(i).toString();
+            value = value.replace(",","");
+            Log.e("[CompanyDetailActivity]", "preValue:" + companySalary.get(i).toString() + " " + value);
+            entries.add(new Entry(i+1, Integer.parseInt(value)));
+        }
+
+        LineDataSet lineDataSet = new LineDataSet(entries, "속성명1");
+        lineDataSet.setLineWidth(2);
+        lineDataSet.setCircleRadius(6);
+        lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"));
+        lineDataSet.setColor(Color.parseColor("#FFA1B4DC"));
+        lineDataSet.setDrawCircleHole(true);
+        lineDataSet.setDrawCircles(true);
+        lineDataSet.setDrawHorizontalHighlightIndicator(false);
+        lineDataSet.setDrawHighlightIndicators(false);
+        lineDataSet.setDrawValues(false);
+
+        LineData lineData = new LineData(lineDataSet);
+        lineChart.setData(lineData);
+
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextColor(Color.BLACK);
+        xAxis.enableGridDashedLine(8, 24, 0);
+
+        YAxis yLAxis = lineChart.getAxisLeft();
+        yLAxis.setTextColor(Color.BLACK);
+
+        YAxis yRAxis = lineChart.getAxisRight();
+        yRAxis.setDrawLabels(false);
+        yRAxis.setDrawAxisLine(false);
+        yRAxis.setDrawGridLines(false);
+
+        Description description = new Description();
+        description.setText("");
+
+        lineChart.setDoubleTapToZoomEnabled(false);
+        lineChart.setDrawGridBackground(false);
+        lineChart.setDescription(description);
+        lineChart.invalidate();
+
+        marker.setChartView(lineChart);
+        lineChart.setMarker(marker);
     }
 
     @Override

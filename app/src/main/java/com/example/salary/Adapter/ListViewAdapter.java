@@ -1,7 +1,6 @@
 package com.example.salary.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,19 +12,16 @@ import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.salary.Activity.MyPageCustomDialog;
 import com.example.salary.Fragment.MypageFragment;
 import com.example.salary.R;
-import com.example.salary.Utils.Utils;
+import com.example.salary.Utils.Utilsdd;
 import com.example.salary.data.ListViewItem;
 import com.example.salary.data.PreferenceManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 public class ListViewAdapter extends BaseAdapter implements Filterable {
@@ -80,7 +76,7 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
                 if (isChecked) {
                     PreferenceManager.getInstance().addMypageCompanyList(companyList.get(position).getCompanyName());
                 } else {
-                    if (companyList.get(position).getFragment_name().equals(Utils.FRAGMENT_MYPAGE)) {
+                    if (companyList.get(position).getFragment_name().equals(Utilsdd.FRAGMENT_MYPAGE)) {
                         MypageFragment.getInstance().showDialog(companyList.get(position).getCompanyName(), companyCheck);
                     } else {
                         PreferenceManager.getInstance().removeMypageCompanyList(companyList.get(position).getCompanyName());

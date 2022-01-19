@@ -21,15 +21,18 @@
         <entry key="app/src/main/res/drawable/btn_bg_orange_selected.xml" value="0.1953125" />
         <entry key="app/src/main/res/drawable/custom_button.xml" value="0.25" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.25555555555555554" />
+        <entry key="app/src/main/res/drawable/outline.xml" value="0.1259259259259259" />
         <entry key="app/src/main/res/drawable/searchview_background.xml" value="0.2462962962962963" />
         <entry key="app/src/main/res/drawable/text_cursor.xml" value="0.2462962962962963" />
+        <entry key="app/src/main/res/drawable/valueTextView.xml" value="0.12222222222222222" />
         <entry key="app/src/main/res/layout/activity_areacompany.xml" value="0.1388888888888889" />
         <entry key="app/src/main/res/layout/activity_centercompany.xml" value="0.27239583333333334" />
-        <entry key="app/src/main/res/layout/activity_companydetail.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_companydetail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_mypagepopup.xml" value="0.3721590909090909" />
         <entry key="app/src/main/res/layout/activtiy_allcompany.xml" value="0.19322916666666667" />
         <entry key="app/src/main/res/layout/bottom_sheet_layout.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/custommaker.xml" value="0.1259259259259259" />
         <entry key="app/src/main/res/layout/item_slider.xml" value="0.15462962962962962" />
         <entry key="app/src/main/res/layout/listviewitem.xml" value="0.2856388234832382" />
         <entry key="app/src/main/res/layout/profileview.xml" value="0.19322916666666667" />

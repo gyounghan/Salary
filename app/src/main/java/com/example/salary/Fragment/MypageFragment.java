@@ -2,15 +2,12 @@ package com.example.salary.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -24,7 +21,7 @@ import com.example.salary.Activity.CompanyDetailActivity;
 import com.example.salary.Activity.MyPageCustomDialog;
 import com.example.salary.Adapter.ListViewAdapter;
 import com.example.salary.R;
-import com.example.salary.Utils.Utils;
+import com.example.salary.Utils.Utilsdd;
 import com.example.salary.data.CompanyData;
 import com.example.salary.data.SalaryData;
 
@@ -77,7 +74,7 @@ public class MypageFragment extends Fragment {
                     getResources().getIdentifier(companyInfo.getCompanyLogo(), "drawable", getContext().getPackageName())),
                     companyInfo.getCompanyName(),
                     companyInfo.getCompanyAddress(),
-                    Utils.FRAGMENT_MYPAGE);
+                    Utilsdd.FRAGMENT_MYPAGE);
         }
 
 
