@@ -4,50 +4,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="13"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/temptextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="바텀 시트 다이얼로그입니다" />
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:textStyle="bold"
+        android:autoSizeTextType="uniform"
+        android:text="월 급여 세부사항" />
 
     <TextView
         android:id="@+id/baseSalary"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="기본급   : " />
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:autoSizeTextType="uniform"
+        android:text="기본급     : " />
 
     <TextView
         android:id="@+id/fixedAllowance"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="고정수당  : " />
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:autoSizeTextType="uniform"
+        android:text="고정수당   : " />
 
     <TextView
         android:id="@+id/employeeBenefit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:autoSizeTextType="uniform"
         android:text="복지후생비 : " />
 
     <TextView
         android:id="@+id/performanceAllowance"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="실적수당  : " />
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:autoSizeTextType="uniform"
+        android:text="실적수당   : " />
 
     <TextView
         android:id="@+id/realAmount"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="실수령액  : " />
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:autoSizeTextType="uniform"
+        android:text="실수령액   : " />
 
-    <Button
-        android:id="@+id/btn_hide_bt_sheet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#D62424"
-        android:text="Hide Bottom sheet" />
 
 
 </LinearLayout>

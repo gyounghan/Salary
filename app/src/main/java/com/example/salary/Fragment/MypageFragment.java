@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -33,7 +34,8 @@ public class MypageFragment extends Fragment {
 
     public static MypageFragment mypageFragment = null;
 
-    private EditText searchText;
+//    private EditText searchText;
+    private SearchView searchView;
 
     private ArrayList<String> companyNameList = new ArrayList<String>();
     private ArrayList<String> companyAddressList = new ArrayList<String>();
@@ -58,7 +60,8 @@ public class MypageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.activtiy_allcompany, container, false);
 
-        searchText = (EditText) rootView.findViewById(R.id.search);
+//        searchText = (EditText) rootView.findViewById(R.id.search);
+        searchView = (SearchView) rootView.findViewById(R.id.search);
 
         // 리스트 추가
         ArrayList<CompanyData> companyList = SalaryData.getInstance().getMyPageCompanyList();
@@ -90,29 +93,48 @@ public class MypageFragment extends Fragment {
                 Toast.makeText(getContext(), adapter.getListViewItem(position).getCompanyName(), Toast.LENGTH_SHORT).show();
             }
         });
+        //edittext 이벤트
+//        searchText.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                Log.e("fragment", "beforeTextChanged");
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                Log.e("fragment", "onTextChanged");
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable search) {
+//                String text = search.toString();
+//                Log.e("fragment", "afterTextChanged : " + text.length());
+//                if (text.length() > 0) {
+//                    listView.setFilterText(text);
+//                } else {
+//                    listView.clearTextFilter();
+//                }
+//            }
+//        });
 
-        searchText.addTextChangedListener(new TextWatcher() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                Log.e("fragment", "beforeTextChanged");
-
+            public boolean onQueryTextSubmit(String query) {
+                return true;
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Log.e("fragment", "onTextChanged");
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable search) {
-                String text = search.toString();
+            public boolean onQueryTextChange(String newText) {
+                String text = newText;
                 Log.e("fragment", "afterTextChanged : " + text.length());
                 if (text.length() > 0) {
                     listView.setFilterText(text);
                 } else {
                     listView.clearTextFilter();
                 }
+                return true;
             }
         });
 

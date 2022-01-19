@@ -51,17 +51,6 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
         mListener = (BottomSheetListener) getContext();
         setDetailSalaryInfo();
 
-        btn_hide_bt_sheet = view.findViewById(R.id.btn_hide_bt_sheet);
-        btn_hide_bt_sheet.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                mListener.onButtonClickeed("바텀 시트 숨겨짐");
-
-                dismiss();
-            }
-        });
-
         return view;
     }
 
@@ -83,11 +72,11 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
             JSONArray performanceAllowance_list = companyObject.getJSONArray("performanceAllowance");
             JSONArray realAmount_list = companyObject.getJSONArray("realAmount");
 
-            baseSalaryView.setText("기본급   : " + baseSalary_list.get(index));
-            fixedAllowanceView.setText("고정수당  : " + fixedAllowance_list.get(index));
-            employeeBenefitView.setText("복지후생비 : " + employeeBenefit_list.get(index));
-            performanceAllowanceView.setText("실적수당  : " + performanceAllowance_list.get(index));
-            realAmountView.setText("실수령액  : " + realAmount_list.get(index));
+            baseSalaryView.setText("기본급          :   " + baseSalary_list.get(index));
+            fixedAllowanceView.setText("고정수당     :   " + fixedAllowance_list.get(index));
+            employeeBenefitView.setText("복지후생비  :   " + employeeBenefit_list.get(index));
+            performanceAllowanceView.setText("실적수당     :   " + performanceAllowance_list.get(index));
+            realAmountView.setText("실수령액     :   " + realAmount_list.get(index));
         } catch (Exception e) {
 
             Log.e("[BottomSheetDialog]", "setDetailSalaryInfo exception:" + e);

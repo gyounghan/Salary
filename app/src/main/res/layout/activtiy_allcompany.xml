@@ -2,17 +2,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_weight="20">
 
-    <EditText
+<!--    <EditText-->
+<!--        android:id="@+id/search"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:drawableLeft="@drawable/search_icon2"-->
+<!--        android:paddingLeft="10dp"-->
+<!--        android:textCursorDrawable="@drawable/text_cursor"-->
+<!--        android:background="@null"-->
+<!--        android:hint="검색어를 입력하시오" />-->
+
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:hint="검색어를 입력하시오" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:iconifiedByDefault="false"
+        app:queryBackground="@drawable/searchview_background"
+        app:queryHint="기업명을 입력하시오" />
 
     <ListView
         android:id="@+id/companyList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_weight="19"/>
 </LinearLayout>

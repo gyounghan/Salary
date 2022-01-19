@@ -2,11 +2,15 @@ package com.example.salary.Activity;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+
+import androidx.annotation.NonNull;
 
 import com.example.salary.Adapter.ListViewAdapter;
 import com.example.salary.Fragment.MypageFragment;
@@ -59,5 +63,16 @@ public class MyPageCustomDialog extends Dialog {
                 dismiss();
             }
         });
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(@NonNull MotionEvent ev) {
+        Rect dialogBounds = new Rect();
+        getWindow().getDecorView().getHitRect(dialogBounds);
+
+        if (!dialogBounds.contains((int) ev.getX(), (int) ev.getY())) {
+            mypageCheckbox.setChecked(true);
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

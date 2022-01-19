@@ -88,7 +88,7 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
             companyAddressTextView.setText(companyAddress);
             companyNameTextView.setText(companyName);
 
-            gradeView.setText(grade);
+            gradeView.setText(grade + " ");
             senerityView.setText("근속연수 : " + senerity);
             gradeRating.setRating(Float.parseFloat(grade));
 
@@ -165,11 +165,14 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
         LinearLayout salaryView = findViewById(R.id.salaryView);
 
         for(int i=0;i<companySalary.length();i++) {
+            LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            param.setMargins(10, 5, 10, 5);
             Button button = new Button(this);
             button.setBackgroundResource(R.drawable.custom_button);
             button.setText((i+1)+ "연차 연봉 " + companySalary.get(i));
             button.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
             button.setId(i);
+            button.setLayoutParams(param);
             button.setOnClickListener(new Button.OnClickListener(){
                 @Override
                 public void onClick(View v) {
