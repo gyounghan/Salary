@@ -18,7 +18,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.salary.Activity.CompanyDetailActivity;
-import com.example.salary.Activity.MyPageCustomDialog;
+import com.example.salary.Dialog.MyPageCustomDialog;
 import com.example.salary.Adapter.ListViewAdapter;
 import com.example.salary.R;
 import com.example.salary.Utils.Utilsdd;

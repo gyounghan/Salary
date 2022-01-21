@@ -57,4 +57,7 @@ dependencies {
 
     // graph
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    //floatingActionBar
+    implementation 'com.android.support:design:26.1.0'
 }

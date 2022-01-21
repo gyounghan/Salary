@@ -1,4 +1,4 @@
-package com.example.salary.Activity;
+package com.example.salary.Dialog;
 
 import android.app.Dialog;
 import android.content.Context;

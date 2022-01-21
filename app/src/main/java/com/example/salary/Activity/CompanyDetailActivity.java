@@ -2,6 +2,7 @@ package com.example.salary.Activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -29,6 +30,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.salary.Adapter.ImageAdapter;
+import com.example.salary.Dialog.CompareCompanyDialog;
+import com.example.salary.Dialog.MyPageCustomDialog;
 import com.example.salary.Fragment.BottomSheetDialog;
 import com.example.salary.MyMarkView;
 import com.example.salary.R;
@@ -41,6 +44,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,8 +67,12 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
     private String companyName;
 
     private JSONArray companySalary;
-    private Button testbutton;
+    private FloatingActionButton graphButton;
+    private Button select_button;
+    private CompareCompanyDialog compareCompanyDialog;
     private DrawerLayout drawerLayout;
+    private static List<Entry> entries;
+    private static JSONObject jsonObject;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,29 +84,35 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
         Intent companyInfo = getIntent();
         companyName = companyInfo.getExtras().getString("companyName");
 
-        JSONObject jsonObject = SalaryData.getInstance().getJsonData();
+        jsonObject = SalaryData.getInstance().getJsonData();
 
         ImageView companyLogoView = findViewById(R.id.company_logoView);
-
         drawerLayout = findViewById(R.id.drawerLayout);
 
-        testbutton = findViewById(R.id.test);
-        testbutton.setOnClickListener(new View.OnClickListener() {
+        select_button = findViewById(R.id.comparebutton);
+
+        graphButton = findViewById(R.id.graphFloatingButton);
+        graphButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (!drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
                     drawerLayout.openDrawer(Gravity.RIGHT);
                 }
             }
         });
 
+        compareCompanyDialog = new CompareCompanyDialog(this);
+        compareCompanyDialog.setPrev_companyName(companyName);
+        select_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                compareCompanyDialog.setEntries(entries);
+                compareCompanyDialog.show();
+            }
+        });
+
         try {
             JSONObject companyObject = new JSONObject(jsonObject.getString(companyName));
-
-//            int iResId = getResources().getIdentifier( "@drawable/" + companyObject.getString("logo"), "drawable", this.getPackageName() );
-//            ImageView imageView = findViewById( R.id.companyImage );
-//            imageView.setImageResource( iResId );
 
             String companyAddress = companyObject.getString("address");
             String grade = companyObject.getString("grade");
@@ -126,10 +140,17 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
             companySalary = companyObject.getJSONArray("salary");
 
             addButton(companySalary);
+            setSalaryInfo();
             setLineChart();
             Log.e("companyDetailActivity", "salary:" + companySalary.get(20));
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+
+        if (Intent.ACTION_SEARCH.equals(companyInfo.getAction())) {
+            Log.e("[CompanyDetailActivity]", "recevie log : " + companyInfo.getAction());
+            String query = companyInfo.getStringExtra(SearchManager.QUERY);
+            doMySearch(query);
         }
     }
 
@@ -255,8 +276,8 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
     public void setLineChart() throws JSONException {
         MyMarkView marker = new MyMarkView(this, R.layout.custommaker);
         LineChart lineChart = findViewById(R.id.linechart);
-        List<Entry> entries = new ArrayList<>();
         HorizontalScrollView horizontalScrollView = findViewById(R.id.graph_scrollView);
+        entries = new ArrayList<>();
 
         lineChart.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -304,7 +325,6 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
         for (int i=0;i<companySalary.length();i++) {
             String value = companySalary.get(i).toString();
             value = value.replace(",","");
-            Log.e("[CompanyDetailActivity]", "preValue:" + companySalary.get(i).toString() + " " + value);
             entries.add(new Entry(i+1, Integer.parseInt(value)));
         }
 
@@ -347,6 +367,38 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
         lineChart.setMarker(marker);
     }
 
+    public void setSalaryInfo() {
+        float average_salary_rate_rise = 0.0F;
+        float sum_salary_diff = 0;
+        float prev_salary = 0;
+        float now_salary = 0;
+        String first_salary = "";
+        String max_salary = "";
+        try {
+            first_salary = companySalary.get(0).toString();
+            max_salary = companySalary.get(companySalary.length()-1).toString();
+            for (int i=1;i<companySalary.length();i++) {
+                prev_salary = Float.parseFloat(companySalary.get(i - 1).toString().replace(",", ""));
+                now_salary = Float.parseFloat(companySalary.get(i).toString().replace(",", ""));
+                sum_salary_diff = sum_salary_diff + ((float) (now_salary / prev_salary) - 1);
+                Log.e("[CompanyDetailActivity]", "sum_salary_diff:" + now_salary + " " + prev_salary + " " + (float) (now_salary / prev_salary) + " " + sum_salary_diff);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        if (companySalary.length() > 0) {
+            average_salary_rate_rise = sum_salary_diff / companySalary.length() * 100;
+            TextView average_rate_rise_textView = findViewById(R.id.average_rate_rise);
+            average_rate_rise_textView.setText("" + String.format("%.2f", average_salary_rate_rise) + "%");
+        }
+
+        TextView first_salary_textView = findViewById(R.id.first_salary);
+        TextView max_salary_textView = findViewById(R.id.max_salary);
+        first_salary_textView.setText("" + first_salary + "원");
+        max_salary_textView.setText("" + max_salary + "원");
+
+    }
+
     @Override
     public void onButtonClickeed(String text) {
 
@@ -369,6 +421,26 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
         public void onAnimationRepeat(Animation animation) {
             Log.e("[detailActivity]", "onAnimationRepeat");
 
+        }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        Log.e("[CompanyDetailActivity]", "finish");
+    }
+
+    public void doMySearch(String query) {
+        for (int i=0;i<companySalary.length();i++) {
+            try {
+                if (companySalary.get(i).equals(query)) {
+                    return;
+                } else {
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -19,8 +19,18 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activity.CompanyDetailActivity"/>
+        <activity android:name=".Activity.CompanyDetailActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+
+        </activity>
+
 <!--        <activity android:name=".Activity.MyPageCustomDialog" android:theme="@style/Theme.AppCompat.Dialog"/>-->
+
     </application>
 
 </manifest>
