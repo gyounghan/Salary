@@ -60,4 +60,7 @@ dependencies {
 
     //floatingActionBar
     implementation 'com.android.support:design:26.1.0'
+
+    //admops
+    implementation 'com.google.android.gms:play-services-ads:20.5.0'
 }

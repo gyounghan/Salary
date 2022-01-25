@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -44,6 +45,16 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdLoader;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.formats.UnifiedNativeAd;
+import com.google.android.gms.ads.nativead.MediaView;
+import com.google.android.gms.ads.nativead.NativeAd;
+import com.google.android.gms.ads.nativead.NativeAdOptions;
+import com.google.android.gms.ads.nativead.NativeAdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -73,6 +84,46 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
     private DrawerLayout drawerLayout;
     private static List<Entry> entries;
     private static JSONObject jsonObject;
+
+    private void displayNativeAd() {
+        MobileAds.initialize(this);
+        AdLoader adLoader = new AdLoader.Builder(this, "ca-app-pub-3940256099942544/2247696110")
+                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+                    @Override
+                    public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
+                        Log.e("[companyDetailActivity]", "start nativeAd");
+                        NativeAdView adView = (NativeAdView) findViewById(R.id.adNativeView);
+
+                        TextView headlineView = findViewById(R.id.ad_headline);
+                        headlineView.setText(nativeAd.getHeadline());
+                        adView.setHeadlineView(headlineView);
+
+                        ImageView imageView = (ImageView) findViewById(R.id.ad_app_icon);
+                        imageView.setImageDrawable(nativeAd.getIcon().getDrawable());
+                        adView.setIconView(imageView);
+
+                        MediaView mediaView = (MediaView) findViewById(R.id.adMediaView);
+                        adView.setMediaView(mediaView);
+
+                        adView.setNativeAd(nativeAd);
+                    }
+
+                })
+                .withAdListener(new AdListener() {
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        super.onAdFailedToLoad(loadAdError);
+                    }
+                })
+                .withNativeAdOptions(new NativeAdOptions.Builder()
+                        // Methods in the NativeAdOptions.Builder class can be
+                        // used here to specify individual options settings.
+                        .build())
+                .build();
+
+        adLoader.loadAd(new AdRequest.Builder().build());
+
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,7 +175,7 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
             setmPager(companyId);
 
             TextView gradeView = findViewById(R.id.grade);
-            RatingBar gradeRating = findViewById(R.id.gradeRating);
+//            RatingBar gradeRating = findViewById(R.id.gradeRating);
             TextView senerityView = findViewById(R.id.senerity);
 
             TextView companyNameTextView = findViewById(R.id.companyName);
@@ -133,9 +184,9 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
             companyAddressTextView.setText(companyAddress);
             companyNameTextView.setText(companyName);
 
-            gradeView.setText(grade + " ");
-            senerityView.setText("근속연수 : " + senerity);
-            gradeRating.setRating(Float.parseFloat(grade));
+            gradeView.setText(" " + grade);
+            senerityView.setText("근속연수 " + senerity);
+//            gradeRating.setRating(Float.parseFloat(grade));
 
             companySalary = companyObject.getJSONArray("salary");
 
@@ -146,6 +197,9 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
+        displayNativeAd();
 
         if (Intent.ACTION_SEARCH.equals(companyInfo.getAction())) {
             Log.e("[CompanyDetailActivity]", "recevie log : " + companyInfo.getAction());
@@ -328,7 +382,7 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
             entries.add(new Entry(i+1, Integer.parseInt(value)));
         }
 
-        LineDataSet lineDataSet = new LineDataSet(entries, "속성명1");
+        LineDataSet lineDataSet = new LineDataSet(entries, companyName);
         lineDataSet.setLineWidth(2);
         lineDataSet.setCircleRadius(6);
         lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"));

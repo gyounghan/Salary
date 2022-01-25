@@ -13,15 +13,19 @@ import com.example.salary.Fragment.CentralCompanyFragment;
 import com.example.salary.Fragment.MypageFragment;
 import com.example.salary.R;
 import com.example.salary.data.CompanyData;
-import com.example.salary.data.CompanyDataManager;
-import com.example.salary.data.DBHelper;
 import com.example.salary.data.PreferenceManager;
 import com.example.salary.data.SalaryData;
+
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.AdRequest;
+
 import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.Iterator;
 
@@ -30,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private TabLayout tabs;
     private Fragment allCompany = new AllCompanyFragment();
     private Fragment centerCompany = new CentralCompanyFragment();
-    private Fragment areaCompany = new LocalCompanyFragment();
+    private Fragment localCompany = new LocalCompanyFragment();
     private Fragment myCompany = MypageFragment.getInstance();
 
     private SalaryData salaryData = null;
@@ -38,14 +42,44 @@ public class MainActivity extends AppCompatActivity {
     private EditText searchText;
     private PreferenceManager prefs = null;
 
-    private CompanyDataManager companyDBManager = null;
-    private DBHelper dbHelper;
+    private AdView mAdView;
+    Bundle bundle = new Bundle();
+
+    public boolean deleteCache(File dir) {
+        try {
+            if (dir != null && dir.isDirectory()) {
+                String[] children = dir.list();
+                for (String child : children) {
+                    boolean isSuccess = deleteCache(new File(dir, child));
+                    if (!isSuccess) {
+                        return false;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Log.e("[MainActivity]", "deleteCache exception: " + e);
+        }
+        return dir.delete();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        deleteCache(getCacheDir());
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.Theme_Salary);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MobileAds.initialize(this);
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
 
         salaryData = SalaryData.getInstance();
         // tabView
@@ -55,6 +89,9 @@ public class MainActivity extends AppCompatActivity {
         tabs.addTab(tabs.newTab().setText("지방"));
         tabs.addTab(tabs.newTab().setText("마이페이지"));
 
+        bundle.putInt("select", 0);
+
+        allCompany.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, allCompany).commit();
 
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -62,16 +99,22 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 Fragment selected = null;
+
                 if (position == 0) {
                     selected = allCompany;
                 } else if (position == 1) {
                     selected = centerCompany;
                 } else if (position == 2) {
-                    selected = areaCompany;
+                    selected = localCompany;
                 } else if (position == 3) {
                     selected = myCompany;
                 }
+//
+//                bundle.putInt("select", position);
+//                selected.setArguments(bundle);
+//                System.out.println("select:" + position);
                 getSupportFragmentManager().beginTransaction().replace(R.id.container, selected).commit();
+
             }
 
             @Override
@@ -85,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         PreferenceManager.preferenceManager.getInstance().setContext(getApplication());
-        dbHelper = new DBHelper(MainActivity.this ,3);
         initCompanyInfo();
 
 //        searchText = findViewById(R.id.search);

@@ -1,5 +1,6 @@
 package com.example.salary.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,33 +22,72 @@ import com.example.salary.Adapter.ListViewAdapter;
 import com.example.salary.R;
 import com.example.salary.Utils.Utilsdd;
 import com.example.salary.data.CompanyData;
-import com.example.salary.data.DBHelper;
 import com.example.salary.data.SalaryData;
 
 import java.util.ArrayList;
 
 public class AllCompanyFragment extends Fragment {
 
-    public DBHelper dbHelper = null;
-//    private EditText searchText;
     private SearchView searchView;
-
+    private ArrayList<CompanyData> companyList;
     private ArrayList<String> companyNameList = new ArrayList<String>();
     private ArrayList<String> companyAddressList = new ArrayList<String>();
     private ListViewAdapter adapter;
     ListView listView;
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        System.out.println("resume:" );
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        System.out.println("attach:" );
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        System.out.println("detach:" );
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.activtiy_allcompany, container, false);
+        int position = 0;
+        Bundle bundle = this.getArguments();
+        try {
+            position = bundle.getInt("select", 10);
+            System.out.println("position:" + position);
+        } catch (Exception e) {
+            System.out.println("Exception:" + e);
+        }
+
+        companyList = SalaryData.getInstance().getCompanyList();
+
+//        switch (position) {
+//            case 0:
+//                companyList = SalaryData.getInstance().getCompanyList();
+//                break;
+//            case 1:
+//                companyList = SalaryData.getInstance().getCentralCompanyList();
+//                break;
+//            case 2:
+//                companyList = SalaryData.getInstance().getLocalCompanyList();
+//                break;
+//            default:
+//                break;
+//        }
 
 //        searchText = (EditText) rootView.findViewById(R.id.search);
         searchView = (SearchView) rootView.findViewById(R.id.search);
 
         // 리스트 추가
-        ArrayList<CompanyData> companyList = SalaryData.getInstance().getCompanyList();
-
         listView = (ListView) rootView.findViewById(R.id.companyList);
 
         adapter = new ListViewAdapter(getContext());

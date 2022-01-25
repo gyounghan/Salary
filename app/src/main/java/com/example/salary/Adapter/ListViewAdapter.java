@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ListViewAdapter extends BaseAdapter implements Filterable {
+public class  ListViewAdapter extends BaseAdapter implements Filterable {
 
     private ArrayList<ListViewItem> companyList = new ArrayList<>();
     private ArrayList<ListViewItem> init_companyList = new ArrayList<>();
@@ -118,6 +118,10 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
                 break;
             }
         }
+    }
+
+    public void removeAllItem() {
+        companyList.clear();
     }
 
     private class ListFilter extends Filter {
