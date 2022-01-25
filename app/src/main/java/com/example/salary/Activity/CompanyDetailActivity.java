@@ -85,45 +85,45 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
     private static List<Entry> entries;
     private static JSONObject jsonObject;
 
-    private void displayNativeAd() {
-        MobileAds.initialize(this);
-        AdLoader adLoader = new AdLoader.Builder(this, "ca-app-pub-3940256099942544/2247696110")
-                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
-                    @Override
-                    public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
-                        Log.e("[companyDetailActivity]", "start nativeAd");
-                        NativeAdView adView = (NativeAdView) findViewById(R.id.adNativeView);
-
-                        TextView headlineView = findViewById(R.id.ad_headline);
-                        headlineView.setText(nativeAd.getHeadline());
-                        adView.setHeadlineView(headlineView);
-
-                        ImageView imageView = (ImageView) findViewById(R.id.ad_app_icon);
-                        imageView.setImageDrawable(nativeAd.getIcon().getDrawable());
-                        adView.setIconView(imageView);
-
-                        MediaView mediaView = (MediaView) findViewById(R.id.adMediaView);
-                        adView.setMediaView(mediaView);
-
-                        adView.setNativeAd(nativeAd);
-                    }
-
-                })
-                .withAdListener(new AdListener() {
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        super.onAdFailedToLoad(loadAdError);
-                    }
-                })
-                .withNativeAdOptions(new NativeAdOptions.Builder()
-                        // Methods in the NativeAdOptions.Builder class can be
-                        // used here to specify individual options settings.
-                        .build())
-                .build();
-
-        adLoader.loadAd(new AdRequest.Builder().build());
-
-    }
+//    private void displayNativeAd() {
+//        MobileAds.initialize(this);
+//        AdLoader adLoader = new AdLoader.Builder(this, "ca-app-pub-3940256099942544/2247696110")
+//                .forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
+//                    @Override
+//                    public void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
+//                        Log.e("[companyDetailActivity]", "start nativeAd");
+//                        NativeAdView adView = (NativeAdView) findViewById(R.id.adNativeView);
+//
+//                        TextView headlineView = findViewById(R.id.ad_headline);
+//                        headlineView.setText(nativeAd.getHeadline());
+//                        adView.setHeadlineView(headlineView);
+//
+//                        ImageView imageView = (ImageView) findViewById(R.id.ad_app_icon);
+//                        imageView.setImageDrawable(nativeAd.getIcon().getDrawable());
+//                        adView.setIconView(imageView);
+//
+//                        MediaView mediaView = (MediaView) findViewById(R.id.adMediaView);
+//                        adView.setMediaView(mediaView);
+//
+//                        adView.setNativeAd(nativeAd);
+//                    }
+//
+//                })
+//                .withAdListener(new AdListener() {
+//                    @Override
+//                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+//                        super.onAdFailedToLoad(loadAdError);
+//                    }
+//                })
+//                .withNativeAdOptions(new NativeAdOptions.Builder()
+//                        // Methods in the NativeAdOptions.Builder class can be
+//                        // used here to specify individual options settings.
+//                        .build())
+//                .build();
+//
+//        adLoader.loadAd(new AdRequest.Builder().build());
+//
+//    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -199,7 +199,7 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
         }
 
 
-        displayNativeAd();
+//        displayNativeAd();
 
         if (Intent.ACTION_SEARCH.equals(companyInfo.getAction())) {
             Log.e("[CompanyDetailActivity]", "recevie log : " + companyInfo.getAction());
