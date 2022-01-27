@@ -48,6 +48,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
@@ -62,6 +63,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,6 +86,13 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
     private DrawerLayout drawerLayout;
     private static List<Entry> entries;
     private static JSONObject jsonObject;
+
+
+    private void displayBannerAd() {
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+    }
 
 //    private void displayNativeAd() {
 //        MobileAds.initialize(this);
@@ -198,8 +207,7 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
             e.printStackTrace();
         }
 
-
-//        displayNativeAd();
+        displayBannerAd();
 
         if (Intent.ACTION_SEARCH.equals(companyInfo.getAction())) {
             Log.e("[CompanyDetailActivity]", "recevie log : " + companyInfo.getAction());
@@ -283,9 +291,11 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
             button.setOnClickListener(new Button.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(companyName, v.getId());
-                    bottomSheetDialog.show(getSupportFragmentManager(), "bottomsheet");
-                    Log.e("[detailActivity]", "onClick");
+                    if (!drawerLayout.isDrawerOpen(Gravity.RIGHT)) {
+                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(companyName, v.getId());
+                        bottomSheetDialog.show(getSupportFragmentManager(), "bottomsheet");
+                        Log.e("[detailActivity]", "onClick");
+                    }
                 }
             });
             salaryView.addView(button);
@@ -426,30 +436,42 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
         float sum_salary_diff = 0;
         float prev_salary = 0;
         float now_salary = 0;
+        float sum_salary = 0;
+        float average_salary = 0;
         String first_salary = "";
         String max_salary = "";
+
         try {
             first_salary = companySalary.get(0).toString();
             max_salary = companySalary.get(companySalary.length()-1).toString();
+            sum_salary = Float.parseFloat(companySalary.get(0).toString().replace(",",""));
             for (int i=1;i<companySalary.length();i++) {
                 prev_salary = Float.parseFloat(companySalary.get(i - 1).toString().replace(",", ""));
                 now_salary = Float.parseFloat(companySalary.get(i).toString().replace(",", ""));
                 sum_salary_diff = sum_salary_diff + ((float) (now_salary / prev_salary) - 1);
+                sum_salary = sum_salary + now_salary;
                 Log.e("[CompanyDetailActivity]", "sum_salary_diff:" + now_salary + " " + prev_salary + " " + (float) (now_salary / prev_salary) + " " + sum_salary_diff);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         if (companySalary.length() > 0) {
             average_salary_rate_rise = sum_salary_diff / companySalary.length() * 100;
             TextView average_rate_rise_textView = findViewById(R.id.average_rate_rise);
             average_rate_rise_textView.setText("" + String.format("%.2f", average_salary_rate_rise) + "%");
+            average_salary = sum_salary / companySalary.length() * 100;
         }
 
         TextView first_salary_textView = findViewById(R.id.first_salary);
         TextView max_salary_textView = findViewById(R.id.max_salary);
+        TextView average_salary_textView = findViewById(R.id.average_salary);
+
+        DecimalFormat formatter = new DecimalFormat("###,###");
+
         first_salary_textView.setText("" + first_salary + "원");
         max_salary_textView.setText("" + max_salary + "원");
+        average_salary_textView.setText(""  + formatter.format(average_salary) + "원");
 
     }
 

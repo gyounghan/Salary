@@ -65,13 +65,11 @@ public class CompareListViewAdapter extends BaseAdapter implements Filterable {
 
         ImageView companyImage = (ImageView) convertView.findViewById(R.id.comparecompanyView);
         TextView companyName = (TextView) convertView.findViewById(R.id.comparecompanyName);
-        TextView companyAddress = (TextView) convertView.findViewById(R.id.comparecompanyAddress);
 
         ListViewItem companyListViewItem = companyList.get(position);
 
         companyImage.setImageDrawable(companyListViewItem.getDrawable());
         companyName.setText(companyListViewItem.getCompanyName());
-        companyAddress.setText(companyListViewItem.getCompanyAddress());
 
         return convertView;
     }
