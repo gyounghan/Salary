@@ -143,19 +143,21 @@ public class AllCompanyFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return true;
+                return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 String text = newText;
                 Log.e("fragment", "afterTextChanged : " + text.length());
-                if (text.length() > 0) {
-                    listView.setFilterText(text);
-                } else {
-                    listView.clearTextFilter();
-                }
-                return true;
+//                if (text.length() > 0) {
+//                    listView.setFilterText(text);
+//                } else {
+//                    listView.clearTextFilter();
+//                }
+
+                ((ListViewAdapter)listView.getAdapter()).getFilter().filter(newText) ;
+                return false;
             }
         });
 

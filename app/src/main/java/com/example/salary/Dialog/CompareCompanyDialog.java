@@ -20,6 +20,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 
 import com.example.salary.Adapter.CompareListViewAdapter;
+import com.example.salary.Adapter.ListViewAdapter;
 import com.example.salary.R;
 import com.example.salary.data.CompanyData;
 import com.example.salary.data.SalaryData;
@@ -120,11 +121,12 @@ public class CompareCompanyDialog extends Dialog {
             public boolean onQueryTextChange(String newText) {
                 String text = newText;
                 Log.e("fragment", "afterTextChanged : " + text.length());
-                if (text.length() > 0) {
-                    compareCompanyListView.setFilterText(text);
-                } else {
-                    compareCompanyListView.clearTextFilter();
-                }
+//                if (text.length() > 0) {
+//                    compareCompanyListView.setFilterText(text);
+//                } else {
+//                    compareCompanyListView.clearTextFilter();
+//                }
+                ((CompareListViewAdapter)compareCompanyListView.getAdapter()).getFilter().filter(newText) ;
                 return true;
             }
         });

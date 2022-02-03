@@ -77,11 +77,12 @@ public class LocalCompanyFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 String text = newText;
                 Log.e("fragment", "afterTextChanged : " + text.length());
-                if (text.length() > 0) {
-                    listView.setFilterText(text);
-                } else {
-                    listView.clearTextFilter();
-                }
+//                if (text.length() > 0) {
+//                    listView.setFilterText(text);
+//                } else {
+//                    listView.clearTextFilter();
+//                }
+                ((ListViewAdapter)listView.getAdapter()).getFilter().filter(newText) ;
                 return true;
             }
         });
