@@ -5,14 +5,19 @@
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.19479166666666667" />
         <entry key="..\:/Users/hkh27/AndroidStudioProjects/Salary/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2552083333333333" />
+        <entry key="..\:/Users/hkh27/AndroidStudioProjects/Salary/app/src/main/res/drawable/background_splash.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/hkh27/AndroidStudioProjects/Salary/app/src/main/res/drawable/btn_bg_orange.xml" value="0.1" />
         <entry key="..\:/Users/hkh27/AndroidStudioProjects/Salary/app/src/main/res/drawable/btn_bg_orange_selected.xml" value="0.1" />
         <entry key="..\:/Users/hkh27/AndroidStudioProjects/Salary/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2552083333333333" />
+        <entry key="..\:/Users/hkh27/AndroidStudioProjects/Salary/app/src/main/res/font/tapmenu.xml" value="0.2838541666666667" />
         <entry key="..\:/Users/hkh27/AndroidStudioProjects/Salary/app/src/main/res/layout/activity_areacompany.xml" value="0.1296875" />
         <entry key="..\:/Users/hkh27/AndroidStudioProjects/Salary/app/src/main/res/layout/activity_centercompany.xml" value="0.1296875" />
         <entry key="..\:/Users/hkh27/AndroidStudioProjects/Salary/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/hkh27/AndroidStudioProjects/Salary/app/src/main/res/layout/activity_mypagepopup.xml" value="0.1359375" />
         <entry key="..\:/Users/hkh27/AndroidStudioProjects/Salary/app/src/main/res/layout/activtiy_allcompany.xml" value="0.1296875" />
         <entry key="..\:/Users/hkh27/AndroidStudioProjects/Salary/app/src/main/res/layout/listviewitem.xml" value="0.536" />
+        <entry key="..\:/Users/hkh27/AndroidStudioProjects/Salary/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.26979166666666665" />
+        <entry key="..\:/Users/hkh27/AndroidStudioProjects/Salary/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.26979166666666665" />
         <entry key="app/src/main/res/drawable-xxhdpi/btn_star.xml" value="0.2722222222222222" />
         <entry key="app/src/main/res/drawable/background_splash.xml" value="0.12777777777777777" />
         <entry key="app/src/main/res/drawable/bg_fading_edge.xml" value="0.25555555555555554" />

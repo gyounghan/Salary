@@ -9,6 +9,7 @@ public class ListViewItem {
     private String companyName;
     private String companyAddress;
     private String fragment_name;
+    private boolean checked;
 
     public ListViewItem()
     {
@@ -44,5 +45,13 @@ public class ListViewItem {
 
     public void setFragment_name(String fragment_name) {
         this.fragment_name = fragment_name;
+    }
+
+    public boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }

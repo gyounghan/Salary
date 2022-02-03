@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.health.ServiceHealthStats;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 public class PreferenceManager {
     public static PreferenceManager preferenceManager = null;
@@ -134,6 +136,15 @@ public class PreferenceManager {
             result = result + " " + company;
         }
         preferenceManager.setString("checkList", result);
+    }
+
+    public boolean isChecked(String companyName) {
+        String checkCompanyInfo = preferenceManager.getString("checkList");
+        List<String> checkList = Arrays.asList(checkCompanyInfo.split(" "));
+        if (checkList.contains(companyName)) {
+            return true;
+        }
+        return false;
     }
 
     public void clear() {

@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.example.salary.Fragment.MypageFragment;
 import com.example.salary.R;
-import com.example.salary.Utils.Utilsdd;
+import com.example.salary.Utils.Utile;
 import com.example.salary.data.ListViewItem;
 import com.example.salary.data.PreferenceManager;
 
@@ -55,8 +55,6 @@ public class  ListViewAdapter extends BaseAdapter implements Filterable {
     public View getView(int position, View convertView, ViewGroup parent) {
         // listviewitem 리소스를 view로 변환
 
-        PreferenceManager prefs = PreferenceManager.getInstance();
-
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.listviewitem, parent, false);
@@ -68,15 +66,16 @@ public class  ListViewAdapter extends BaseAdapter implements Filterable {
         TextView companyAddress = (TextView) convertView.findViewById(R.id.companyAddress);
         CheckBox companyCheck = (CheckBox) convertView.findViewById(R.id.btn_selector);
 
-
         companyCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if (isChecked) {
+                    companyList.get(position).setChecked(true);
                     PreferenceManager.getInstance().addMypageCompanyList(companyList.get(position).getCompanyName());
                 } else {
-                    if (companyList.get(position).getFragment_name().equals(Utilsdd.FRAGMENT_MYPAGE)) {
+                    companyList.get(position).setChecked(false);
+                    if (companyList.get(position).getFragment_name().equals(Utile.FRAGMENT_MYPAGE)) {
                         MypageFragment.getInstance().showDialog(companyList.get(position).getCompanyName(), companyCheck);
                     } else {
                         PreferenceManager.getInstance().removeMypageCompanyList(companyList.get(position).getCompanyName());
@@ -85,16 +84,17 @@ public class  ListViewAdapter extends BaseAdapter implements Filterable {
             }
         });
 
+
         ListViewItem companyListViewItem = companyList.get(position);
 
         companyImage.setImageDrawable(companyListViewItem.getDrawable());
         companyName.setText(companyListViewItem.getCompanyName());
         companyAddress.setText(companyListViewItem.getCompanyAddress());
-
-        String checkCompanyInfo = prefs.getString("checkList");
-        List<String> checkList = Arrays.asList(checkCompanyInfo.split(" "));
-        if (checkList.contains(companyListViewItem.getCompanyName())) {
+        if (companyListViewItem.getChecked()) {
             companyCheck.setChecked(true);
+        } else {
+            companyCheck.setChecked(false);
+
         }
 
         return convertView;
@@ -106,6 +106,12 @@ public class  ListViewAdapter extends BaseAdapter implements Filterable {
         companyListviewItem.setCompanyName(name);
         companyListviewItem.setCompanyAddress(address);
         companyListviewItem.setFragment_name(fragmentName);
+
+        if (PreferenceManager.getInstance().isChecked(name)) {
+            companyListviewItem.setChecked(true);
+        } else {
+            companyListviewItem.setChecked(false);
+        }
 
         companyList.add(companyListviewItem);
         init_companyList.add(companyListviewItem);

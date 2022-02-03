@@ -19,7 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.example.salary.Activity.CompanyDetailActivity;
 import com.example.salary.Adapter.ListViewAdapter;
 import com.example.salary.R;
-import com.example.salary.Utils.Utilsdd;
+import com.example.salary.Utils.Utile;
 import com.example.salary.data.CompanyData;
 import com.example.salary.data.SalaryData;
 
@@ -50,7 +50,7 @@ public class LocalCompanyFragment extends Fragment {
                     getResources().getIdentifier(localCompany.getCompanyLogo(), "drawable", getContext().getPackageName())),
                     localCompany.getCompanyName(),
                     localCompany.getCompanyAddress(),
-                    Utilsdd.FRAGMENT_LOCALCOMPANY);
+                    Utile.FRAGMENT_LOCALCOMPANY);
         }
         listView.setAdapter(adapter);
 

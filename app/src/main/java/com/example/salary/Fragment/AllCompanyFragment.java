@@ -20,7 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.example.salary.Activity.CompanyDetailActivity;
 import com.example.salary.Adapter.ListViewAdapter;
 import com.example.salary.R;
-import com.example.salary.Utils.Utilsdd;
+import com.example.salary.Utils.Utile;
 import com.example.salary.data.CompanyData;
 import com.example.salary.data.SalaryData;
 
@@ -99,7 +99,7 @@ public class AllCompanyFragment extends Fragment {
                     getResources().getIdentifier(companyInfo.getCompanyLogo(), "drawable", getContext().getPackageName())),
                     companyInfo.getCompanyName(),
                     companyInfo.getCompanyAddress(),
-                    Utilsdd.FRAGMENT_ALLCOMPANY);
+                    Utile.FRAGMENT_ALLCOMPANY);
         }
         listView.setAdapter(adapter);
         listView.setTextFilterEnabled(true);

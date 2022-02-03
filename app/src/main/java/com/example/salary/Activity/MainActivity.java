@@ -180,11 +180,10 @@ public class MainActivity extends AppCompatActivity {
                 String companyName= i.next().toString();
                 JSONObject companyObject = new JSONObject(companyInfo.getString(companyName));
                 CompanyData company = new CompanyData();
-
                 company.setCompanyName(companyName);
                 company.setCompanyAddress(companyObject.getString("address"));
                 company.setCompanyType(companyObject.getString("type"));
-                company.setCompanyLogo(companyObject.getString("logo"));
+                company.setCompanyLogo(companyObject.getString("companyId") + "_logo");
 
                 salaryData.addArrayList(company);
 

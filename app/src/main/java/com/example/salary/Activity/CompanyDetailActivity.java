@@ -178,7 +178,7 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
             String grade = companyObject.getString("grade");
             String senerity = companyObject.getString("senerity");
             String companyId = companyObject.getString("companyId");
-            int imageId = getResources().getIdentifier( "@drawable/" + companyObject.getString("logo"), "drawable", this.getPackageName() );
+            int imageId = getResources().getIdentifier( "@drawable/" + companyId + "_logo", "drawable", this.getPackageName() );
             companyLogoView.setImageResource(imageId);
 
             setmPager(companyId);
@@ -460,7 +460,7 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
             average_salary_rate_rise = sum_salary_diff / companySalary.length() * 100;
             TextView average_rate_rise_textView = findViewById(R.id.average_rate_rise);
             average_rate_rise_textView.setText("" + String.format("%.2f", average_salary_rate_rise) + "%");
-            average_salary = sum_salary / companySalary.length() * 100;
+            average_salary = sum_salary / companySalary.length();
         }
 
         TextView first_salary_textView = findViewById(R.id.first_salary);

@@ -21,7 +21,7 @@ import com.example.salary.Activity.CompanyDetailActivity;
 import com.example.salary.Dialog.MyPageCustomDialog;
 import com.example.salary.Adapter.ListViewAdapter;
 import com.example.salary.R;
-import com.example.salary.Utils.Utilsdd;
+import com.example.salary.Utils.Utile;
 import com.example.salary.data.CompanyData;
 import com.example.salary.data.SalaryData;
 
@@ -74,7 +74,7 @@ public class MypageFragment extends Fragment {
                     getResources().getIdentifier(companyInfo.getCompanyLogo(), "drawable", getContext().getPackageName())),
                     companyInfo.getCompanyName(),
                     companyInfo.getCompanyAddress(),
-                    Utilsdd.FRAGMENT_MYPAGE);
+                    Utile.FRAGMENT_MYPAGE);
         }
 
 

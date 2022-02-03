@@ -19,11 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 
-import com.example.salary.Activity.CompanyDetailActivity;
 import com.example.salary.Adapter.CompareListViewAdapter;
-import com.example.salary.Adapter.ListViewAdapter;
 import com.example.salary.R;
-import com.example.salary.Utils.Utilsdd;
 import com.example.salary.data.CompanyData;
 import com.example.salary.data.SalaryData;
 import com.github.mikephil.charting.charts.LineChart;

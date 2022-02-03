@@ -7,22 +7,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.salary.Fragment.MypageFragment;
 import com.example.salary.R;
-import com.example.salary.Utils.Utilsdd;
 import com.example.salary.data.ListViewItem;
 import com.example.salary.data.PreferenceManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class CompareListViewAdapter extends BaseAdapter implements Filterable {
 
