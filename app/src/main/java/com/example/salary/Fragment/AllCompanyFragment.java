@@ -23,6 +23,10 @@ import com.example.salary.R;
 import com.example.salary.Utils.Utile;
 import com.example.salary.data.CompanyData;
 import com.example.salary.data.SalaryData;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 import java.util.ArrayList;
 
@@ -61,6 +65,7 @@ public class AllCompanyFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.activtiy_allcompany, container, false);
         int position = 0;
         Bundle bundle = this.getArguments();
+
         try {
             position = bundle.getInt("select", 10);
             System.out.println("position:" + position);

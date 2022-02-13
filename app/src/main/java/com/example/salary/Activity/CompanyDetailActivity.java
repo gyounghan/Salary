@@ -52,6 +52,8 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.nativead.MediaView;
 import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
@@ -87,6 +89,7 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
     private static List<Entry> entries;
     private static JSONObject jsonObject;
 
+    private InterstitialAd mInterstitialAd;
 
     private void displayBannerAd() {
         AdView mAdView = findViewById(R.id.adView);
@@ -134,12 +137,33 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
 //
 //    }
 
+    public void displayAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        mInterstitialAd.show(CompanyDetailActivity.this);
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        mInterstitialAd = null;
+                    }
+                });
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_companydetail);
 
-//        ImageView companyImage = findViewById(R.id.companyImage);
+        displayAd();
 
         Intent companyInfo = getIntent();
         companyName = companyInfo.getExtras().getString("companyName");
