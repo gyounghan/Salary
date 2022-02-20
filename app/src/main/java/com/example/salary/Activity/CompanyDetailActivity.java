@@ -65,6 +65,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -140,7 +141,7 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
     public void displayAd() {
         AdRequest adRequest = new AdRequest.Builder().build();
 
-        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest,
+        InterstitialAd.load(this,"ca-app-pub-6160139955535500/8902167196", adRequest,
                 new InterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -241,10 +242,17 @@ public class CompanyDetailActivity extends AppCompatActivity implements BottomSh
     }
 
     public void setmPager(String companyId) {
-        int[] imageResources = new int[2];
-        imageResources[0] = getResources().getIdentifier( "@drawable/" + companyId , "drawable", this.getPackageName() );
-        imageResources[1] = getResources().getIdentifier( "@drawable/" + companyId + "_map", "drawable", this.getPackageName() );
-
+        int[] imageResources;
+        File files = new File("@drawable/" + companyId + "_map");
+        //파일 유무를 확인합니다.
+        if(files.exists()) {
+            imageResources = new int[2];
+            imageResources[0] = getResources().getIdentifier( "@drawable/" + companyId , "drawable", this.getPackageName() );
+            imageResources[1] = getResources().getIdentifier( "@drawable/" + companyId + "_map", "drawable", this.getPackageName() );
+        } else {
+            imageResources = new int[1];
+            imageResources[0] = getResources().getIdentifier( "@drawable/" + companyId , "drawable", this.getPackageName() );
+        }
 
         mPager = findViewById(R.id.viewPager);
         layoutIndicator = findViewById(R.id.layoutIndicators);

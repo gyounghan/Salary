@@ -7,6 +7,6 @@
         android:gravity="center"
         android:width="100dp"
         android:height="100dp"
-        android:drawable="@drawable/face"/>
+        android:drawable="@drawable/baseline_paid"/>
 
 </layer-list>

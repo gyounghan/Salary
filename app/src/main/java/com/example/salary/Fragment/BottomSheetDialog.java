@@ -72,20 +72,26 @@ public class BottomSheetDialog extends BottomSheetDialogFragment {
             TextView fixedAllowanceView = view.findViewById(R.id.fixedAllowance);
             TextView employeeBenefitView = view.findViewById(R.id.employeeBenefit);
             TextView performanceAllowanceView = view.findViewById(R.id.performanceAllowance);
+            TextView bonusView = view.findViewById(R.id.bonus);
             TextView realAmountView = view.findViewById(R.id.realAmount);
+            TextView allAmountView = view.findViewById(R.id.allAmount);
 
             JSONObject companyObject = new JSONObject(jsonObject.getString(companyName));
             JSONArray baseSalary_list = companyObject.getJSONArray("baseSalary");
             JSONArray fixedAllowance_list = companyObject.getJSONArray("fixedAllowance");
             JSONArray employeeBenefit_list = companyObject.getJSONArray("employeeBenefit");
             JSONArray performanceAllowance_list = companyObject.getJSONArray("performanceAllowance");
+            JSONArray bonus_list = companyObject.getJSONArray("bonus");
+            JSONArray allAmount_list = companyObject.getJSONArray("allAmount");
             JSONArray realAmount_list = companyObject.getJSONArray("realAmount");
 
-            baseSalaryView.setText("기본급          :   " + baseSalary_list.get(index));
-            fixedAllowanceView.setText("고정수당     :   " + fixedAllowance_list.get(index));
-            employeeBenefitView.setText("복지후생비  :   " + employeeBenefit_list.get(index));
-            performanceAllowanceView.setText("실적수당     :   " + performanceAllowance_list.get(index));
-            realAmountView.setText("실수령액     :   " + realAmount_list.get(index));
+            baseSalaryView.setText("" + baseSalary_list.get(index));
+            fixedAllowanceView.setText("" + fixedAllowance_list.get(index));
+            employeeBenefitView.setText("" + employeeBenefit_list.get(index));
+            performanceAllowanceView.setText("" + performanceAllowance_list.get(index));
+            bonusView.setText("" + bonus_list.get(index));
+            allAmountView.setText("" + allAmount_list.get(index));
+            realAmountView.setText("" + realAmount_list.get(index));
         } catch (Exception e) {
 
             Log.e("[BottomSheetDialog]", "setDetailSalaryInfo exception:" + e);
